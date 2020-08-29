@@ -1,0 +1,12 @@
+# Logs
+logs
+
+# npm
+node_modules
+package-lock.json
+
+# config
+config.js
+
+# plugin
+/plugins/call.js
