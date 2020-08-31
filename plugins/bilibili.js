@@ -2,7 +2,7 @@ const api = require('../lib/api');
 const db = require('../lib/db');
 const RateLimiter = require('limiter').RateLimiter;
 const request = require('request');
-const limiter = new RateLimiter(8, 'second');
+const limiter = new RateLimiter(20, 'second');
 
 const bili = {
 	utils: {
@@ -25,7 +25,12 @@ const bili = {
 							}
 						});
 					}else{
-						r([false, '超过限流策略']);
+						api.logger.warn('超出限流策略，正在重试');
+						setTimeout(() => {
+							bili.utils.request.get(uri).then(e => {
+								r(e);
+							})
+						}, 5e2);
 					}
 				})
 			}
@@ -79,6 +84,7 @@ const bili = {
 		}
 	},
 	update: async () => {
+		api.logger.info(`Bili 正在更新订阅`);
 		const biliList = await db.select('*').from('bili').queryList();
 		for (const e of biliList) {
 			const uid = e.uid;
@@ -124,6 +130,7 @@ const bili = {
 				].join('\n'), e.group);
 			}
 		}
+		api.logger.info(`Bili 订阅更新完成`);
 	}
 }
 
@@ -141,7 +148,7 @@ module.exports = {
 		onload: (e) => {
 			timer = setInterval(() => {
 				bili.update().then(r => {});
-			}, 6e5);
+			}, 3e5);
 			api.logger.info('哔哩哔哩 开始运行');
 		},
 		onunload: (e) => {
