@@ -21,109 +21,116 @@ bot.event.on('group_msg', (e) => {
   })
 
   if(e.msg.substr(0,1) === '.'){
-    if(e.sender.role === 'admin' || e.sender.role === 'owner'){
-      const cmd = e.msg.substr(1).split(' ');
-      if(cmd[0] === 'pm'){
-        if(cmd[1] === 'unload'){
-          const id = cmd[2];
-          if(plugins[id]){
-            if(plugins[id].status === 'running'){
-              pluginMgr.unload(Number(id));
-              bot.send.group('[PM] 卸载成功', e.group);
-            }else{
-              bot.send.group('[PM] 插件没有被加载', e.group);
-            }
+    const cmd = e.msg.substr(1).split(' ');
+    if(cmd[0] === 'pm'){
+      if(cmd[1] === 'unload'){
+        // 卸载插件
+        if(e.sender.role !== 'admin' || e.sender.role !== 'owner') return;
+        const id = cmd[2];
+        if(plugins[id]){
+          if(plugins[id].status === 'running'){
+            pluginMgr.unload(Number(id));
+            bot.send.group('[PM] 卸载成功', e.group);
           }else{
-            bot.send.group('[PM] 插件未找到', e.group);
+            bot.send.group('[PM] 插件没有被加载', e.group);
           }
-        }else if(cmd[1] === 'load'){
-          const id = cmd[2];
-          if(plugins[id]){
-            if(plugins[id].status === 'unloaded'){
-              pluginMgr.load(Number(id));
-              bot.send.group('[PM] 加载成功', e.group);
-            }else{
-              bot.send.group('[PM] 插件已经被加载了', e.group);
-            }
+        }else{
+          bot.send.group('[PM] 插件未找到', e.group);
+        }
+      }else if(cmd[1] === 'load'){
+        // 加载插件
+        if(e.sender.role !== 'admin' || e.sender.role !== 'owner') return;
+        const id = cmd[2];
+        if(plugins[id]){
+          if(plugins[id].status === 'unloaded'){
+            pluginMgr.load(Number(id));
+            bot.send.group('[PM] 加载成功', e.group);
           }else{
-            pluginMgr.load(id);
+            bot.send.group('[PM] 插件已经被加载了', e.group);
           }
-        }else if(cmd[1] === 'reload'){
-          const id = cmd[2];
-          if(plugins[id]){
-            if(plugins[id].status === 'unloaded'){
-              pluginMgr.load(Number(id));
-              bot.send.group('[PM] 加载成功', e.group);
-            }else{
-              pluginMgr.unload(Number(id));
-              pluginMgr.load(Number(id));
-              bot.send.group('[PM] 重载成功', e.group);
-            }
-          }
-        }else if(cmd[1] === 'info'){
-          const id = cmd[2];
-          let p = null;
-          if(typeof id === 'string'){
-            // 插件名
-            let plugin_id = -1;
-            plugins.forEach((e, i) => {
-              if(e.name === id){
-                plugin_id = i;
-              }
-            });
-
-            if(plugin_id === -1){
-              bot.send.group('[PM] 插件未找到', e.group);
-            }else{
-              p = plugins[plugin_id];
-            }
+        }else{
+          pluginMgr.load(id);
+        }
+      }else if(cmd[1] === 'reload'){
+        // 重载插件
+        if(e.sender.role !== 'admin' || e.sender.role !== 'owner') return;
+        const id = cmd[2];
+        if(plugins[id]){
+          if(plugins[id].status === 'unloaded'){
+            pluginMgr.load(Number(id));
+            bot.send.group('[PM] 加载成功', e.group);
           }else{
-            // 插件id
-            if(plugins[id]){
-              p = plugins[id];
-            }else{
-              bot.send.group('[PM] 插件未找到', e.group);
+            pluginMgr.unload(Number(id));
+            pluginMgr.load(Number(id));
+            bot.send.group('[PM] 重载成功', e.group);
+          }
+        }
+      }else if(cmd[1] === 'info'){
+        // 插件信息
+        const id = cmd[2];
+        let p = null;
+        if(typeof id === 'string'){
+          // 插件名
+          let plugin_id = -1;
+          plugins.forEach((e, i) => {
+            if(e.name === id){
+              plugin_id = i;
             }
-          }
-
-          if(p){
-            bot.send.group([
-              `========PM========`,
-              `名称：${p.name}`,
-              `介绍：${p.desc}`,
-              `版本：${p.version}`,
-              `作者：${p.author}`,
-              `状态：${(p.status === 'running' ? '运行中' : '已停止')}`,
-              `========PM========`
-            ].join('\n'), e.group);
-          }
-        }else if(cmd[1] === 'list'){
-          const i = [];
-          plugins.forEach((e) => {
-            i.push(`${e.id}. [${(e.status === 'running' ? '运行中' : '已停止')}]${e.name}(${e.file})`);
           });
-          bot.send.group(i.join('\n'), e.group);
-        }else if(cmd[1] === 'cmd'){
-          const id = cmd[2];
+
+          if(plugin_id === -1){
+            bot.send.group('[PM] 插件未找到', e.group);
+          }else{
+            p = plugins[plugin_id];
+          }
+        }else{
+          // 插件id
           if(plugins[id]){
-            const r = [];
-
-            r.push(`======== ${plugins[id].name} ========`);
-
-            Object.keys(plugins[id].in.commands).forEach(e => {
-              r.push(plugins[id].in.commands[e].helper);
-            });
-
-            r.push(`======== ${plugins[id].name} ========`);
-
-            if(r.length === 0){
-              bot.send.group('[PM] 这个插件没有注册任何命令', e.group);
-            }else{
-              bot.send.group(r.join('\n'), e.group);
-            }
+            p = plugins[id];
           }else{
             bot.send.group('[PM] 插件未找到', e.group);
           }
+        }
+
+        if(p){
+          bot.send.group([
+            `========PM========`,
+            `名称：${p.name}`,
+            `介绍：${p.desc}`,
+            `版本：${p.version}`,
+            `作者：${p.author}`,
+            `状态：${(p.status === 'running' ? '运行中' : '已停止')}`,
+            `========PM========`
+          ].join('\n'), e.group);
+        }
+      }else if(cmd[1] === 'list'){
+        // 插件列表
+        const i = [];
+        plugins.forEach((e) => {
+          i.push(`${e.id}. [${(e.status === 'running' ? '运行中' : '已停止')}]${e.name}(${e.file})`);
+        });
+        bot.send.group(i.join('\n'), e.group);
+      }else if(cmd[1] === 'cmd'){
+        // 插件命令列表
+        const id = cmd[2];
+        if(plugins[id]){
+          const r = [];
+
+          r.push(`======== ${plugins[id].name} ========`);
+
+          Object.keys(plugins[id].in.commands).forEach(e => {
+            r.push(plugins[id].in.commands[e].helper);
+          });
+
+          r.push(`======== ${plugins[id].name} ========`);
+
+          if(r.length === 0){
+            bot.send.group('[PM] 这个插件没有注册任何命令', e.group);
+          }else{
+            bot.send.group(r.join('\n'), e.group);
+          }
+        }else{
+          bot.send.group('[PM] 插件未找到', e.group);
         }
       }
     }

@@ -30,7 +30,7 @@ module.exports = {
   },
   commands: [
     // 命令列表
-	{
+    {
       id: '',   // 命令标识，不能重复，不能包含下划线
       helper: '',   // 帮助信息
       command: /\//,    // 正则表达式，匹配命令
