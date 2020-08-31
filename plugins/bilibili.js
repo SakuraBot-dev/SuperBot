@@ -171,7 +171,7 @@ module.exports = {
 						video: '',
 					}).execute();
 
-					api.bot.send.group('[Bili] 订阅成功');
+					api.bot.send.group('[Bili] 订阅成功', e.group);
 				}
 			}
 		},
@@ -184,7 +184,7 @@ module.exports = {
 				const group = e.group;
 
 				await db.delete('bili').where('uid', uid).where('group', group).execute();
-				api.bot.send.group('[Bili] 删除成功');
+				api.bot.send.group('[Bili] 删除成功', e.group);
 			}
 		},
 		{
@@ -209,7 +209,7 @@ module.exports = {
 			command: /\.bili update/,
 			func: async (e) => {
 				await bili.update();
-				api.bot.send.group('[Bili] 更新成功');
+				api.bot.send.group('[Bili] 更新成功', e.group);
 			}
 		}
 	]
