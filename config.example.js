@@ -4,15 +4,20 @@ module.exports = {
 		event: ''
 	},
 	db: {
+		// 数据库配置
 		host: '',
 		user: '',
 		database: '',
 		password: '',
 		port: 0
 	},
-	api: {
-		token: '',	// 备案信息查询API的token
-		cookie: ''	// 微步的cookie
+	plugin: {
+		whois: {
+			token: ''		// 查询Whois的API
+		},
+		sec: {
+			cookie: ''		// 微步的cookie
+		}
 	},
 	logger: {
 		level: '',		// 日志等级
