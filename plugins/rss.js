@@ -59,7 +59,7 @@ module.exports = {
 		{
 			id: 'add',
 			helper: '.rss add [链接]	添加订阅',
-			command: /\.rss\ add\ (.*)/,
+			command: /\.rss add (.*)/,
 			func: async (e) => {
 				const link = e.msg.substr(9);
 				const group = e.group;
@@ -86,7 +86,7 @@ module.exports = {
 		{
 			id: 'remove',
 			helper: '.rss remove [id]	删除订阅',
-			command: /\.rss\ remove\ (.*)/,
+			command: /\.rss remove (.*)/,
 			func: async (e) => {
 				const id = e.msg.substr(12);
 				const group = e.group;
@@ -106,7 +106,7 @@ module.exports = {
 		{
 			id: 'list',
 			helper: '.rss list	查看本群订阅列表',
-			command: /\.rss\ list/,
+			command: /\.rss list/,
 			func: async (e) => {
 				try{
 					const r = await db
@@ -133,7 +133,7 @@ module.exports = {
 		{
 			id: 'update',
 			helper: '.rss update	立刻刷新订阅',
-			command: /\.rss\ update/,
+			command: /\.rss update/,
 			func: async (e) => {
 				await update();
 				api.bot.send.group('[RSS] 刷新成功', e.group);

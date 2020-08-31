@@ -9,7 +9,7 @@
 ## 开发插件
 参考下面的代码进行开发就行<br>
 写好之后扔 plugins 目录，群聊发送 `pm load xxx.js` 加载插件
-```js
+```javascript
 const api = require('../lib/api');
 
 module.exports = {

@@ -7,7 +7,7 @@ const p = {
 		return new Promise(cb => {
 			request(url, {
 				headers: {
-					Cookie: config.api.cookie,
+					Cookie: config.plugin.sec.cookie,
 					referer: 'https://x.threatbook.cn/nodev4/vb4/viz',
 					'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'
 				}

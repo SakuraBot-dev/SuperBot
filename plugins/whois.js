@@ -69,7 +69,7 @@ module.exports = {
 			func: async (e) => {
 				const domain = e.msg.substr(14);
                 api.bot.send.group('正在查询...', e.group);
-				request(`https://api.devopsclub.cn/api/whoisquery?domain=${domain}&token=${config.api.token}`, {}, (err, res, body) => {
+				request(`https://api.devopsclub.cn/api/whoisquery?domain=${domain}&token=${config.plugin.whois.token}`, {}, (err, res, body) => {
 					if(res.statusCode === 200 || !err){
 						try{
 							const info = JSON.parse(body);
@@ -112,7 +112,7 @@ module.exports = {
 				const domain = e.msg.substr(4);
 
 				api.bot.send.group('正在查询', e.group);
-				request(`https://api.devopsclub.cn/api/icpquery?url=${domain}&token=${config.api.token}`, {}, (err, res, body) => {
+				request(`https://api.devopsclub.cn/api/icpquery?url=${domain}&token=${config.plugin.whois.token}`, {}, (err, res, body) => {
 					if(res.statusCode === 200 || !err){
 						try{
 							const info = JSON.parse(body);
