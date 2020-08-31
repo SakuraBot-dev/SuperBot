@@ -2,7 +2,7 @@ const api = require('../lib/api');
 const db = require('../lib/db');
 const RateLimiter = require('limiter').RateLimiter;
 const request = require('request');
-const limiter = new RateLimiter(20, 'second');
+const limiter = new RateLimiter(8, 'second');
 
 const bili = {
 	utils: {
@@ -96,28 +96,29 @@ const bili = {
 			db.update('bili', {
 				name: user.name
 			}).where('id', e.id).execute();
+			if(liveStat){
+				if(liveStat.liveStatus === 1 && e.liveStat === 'disable'){
+					// 新开播
+					db.update('bili', {
+						liveStat: 'enable'
+					}).where('id', e.id).execute();
 
-			if(liveStat.liveStatus === 1 && e.liveStat === 'disable'){
-				// 新开播
-				db.update('bili', {
-					liveStat: 'enable'
-				}).where('id', e.id).execute();
+					api.bot.send.group([
+						`您订阅的 ${user.name} 开播了`,
+						liveStat.title,
+						`链接：${liveStat.url}`
+					].join('\n'), e.group);
+				}
 
-				api.bot.send.group([
-					`您订阅的 ${user.name} 开播了`,
-					liveStat.title,
-					`链接：${liveStat.url}`
-				].join('\n'), e.group);
+				if(liveStat.liveStatus === 0 && e.liveStat === 'enable'){
+					// 下播
+					db.update('bili', {
+						liveStat: 'disable'
+					}).where('id', e.id).execute();
+				}
 			}
 
-			if(liveStat.liveStatus === 0 && e.liveStat === 'enable'){
-				// 下播
-				db.update('bili', {
-					liveStat: 'disable'
-				}).where('id', e.id).execute();
-			}
-
-			if(latestVideo.bvid !== e.video) {
+			if(latestVideo && latestVideo.bvid !== e.video) {
 				// 新视频发布
 				db.update('bili', {
 					video: latestVideo.bvid
@@ -148,7 +149,7 @@ module.exports = {
 		onload: (e) => {
 			timer = setInterval(() => {
 				bili.update().then(r => {});
-			}, 3e4);
+			}, 6e4);
 			api.logger.info('哔哩哔哩 开始运行');
 		},
 		onunload: (e) => {
