@@ -15,7 +15,7 @@ bot.event.on('group_msg', (e) => {
     if(c.command.test(e.msg)){
       const id = c.key.split('_')[0];
       const cmd = c.key.split('_')[1];
-      logger.info(`${plguins[id].name} 触发了 ${cmd} 命令`);
+      logger.info(`${plugins[id].name} 触发了 ${cmd} 命令`);
       cmd_event.emit(c.key, e);
     }
   })
