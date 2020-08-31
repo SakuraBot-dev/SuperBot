@@ -46,7 +46,7 @@ module.exports = {
 		onload: (e) => {
 			n.timer = setInterval(async () => {
 				await update();
-			}, 3e5);
+			}, 3e4);
 			api.logger.info(`RSS RSS订阅器开始运行`);
 		},
 		// 卸载

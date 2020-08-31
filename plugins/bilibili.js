@@ -148,7 +148,7 @@ module.exports = {
 		onload: (e) => {
 			timer = setInterval(() => {
 				bili.update().then(r => {});
-			}, 3e5);
+			}, 3e4);
 			api.logger.info('哔哩哔哩 开始运行');
 		},
 		onunload: (e) => {
