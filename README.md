@@ -13,31 +13,31 @@
 const api = require('../lib/api');
 
 module.exports = {
-	plugin: {
-		name: '', // 插件名字
-		desc: '', // 插件介绍
-		version: '',  // 版本号
-		author: ''    // 作者
-	},
-	events: {
+  plugin: {
+    name: '', // 插件名字
+    desc: '', // 插件介绍
+    version: '',  // 版本号
+    author: ''    // 作者
+  },
+  events: {
     // 事件列表
-		onload: (e) => {
-			// 插件被加载
-		},
-		onunload: (e) => {
-			// 插件被卸载
-    }
+    onload: (e) => {
+      // 插件被加载
 	},
-	commands: [
+    onunload: (e) => {
+      // 插件被卸载
+    }
+  },
+  commands: [
     // 命令列表
-		{
-			id: '',   // 命令标识，不能重复，不能包含下划线
-			helper: '',   // 帮助信息
-			command: /\//,    // 正则表达式，匹配命令
-			func: async (e) => {
+	{
+      id: '',   // 命令标识，不能重复，不能包含下划线
+      helper: '',   // 帮助信息
+      command: /\//,    // 正则表达式，匹配命令
+      func: async (e) => {
         // 触发命令执行的函数
       }
-		}
-	]
+    }
+  ]
 }
 ```
