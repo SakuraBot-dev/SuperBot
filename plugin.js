@@ -25,7 +25,7 @@ bot.event.on('group_msg', (e) => {
     if(cmd[0] === 'pm'){
       if(cmd[1] === 'unload'){
         // 卸载插件
-        if(e.sender.role !== 'admin' || e.sender.role !== 'owner') return;
+        if(e.sender.role !== 'admin' && e.sender.role !== 'owner') return;
         const id = cmd[2];
         if(plugins[id]){
           if(plugins[id].status === 'running'){
@@ -39,7 +39,7 @@ bot.event.on('group_msg', (e) => {
         }
       }else if(cmd[1] === 'load'){
         // 加载插件
-        if(e.sender.role !== 'admin' || e.sender.role !== 'owner') return;
+        if(e.sender.role !== 'admin' && e.sender.role !== 'owner') return;
         const id = cmd[2];
         if(plugins[id]){
           if(plugins[id].status === 'unloaded'){
@@ -53,7 +53,7 @@ bot.event.on('group_msg', (e) => {
         }
       }else if(cmd[1] === 'reload'){
         // 重载插件
-        if(e.sender.role !== 'admin' || e.sender.role !== 'owner') return;
+        if(e.sender.role !== 'admin' && e.sender.role !== 'owner') return;
         const id = cmd[2];
         if(plugins[id]){
           if(plugins[id].status === 'unloaded'){
