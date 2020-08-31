@@ -120,8 +120,7 @@ const bili = {
 				api.bot.send.group([
 					`您订阅的 ${user.name} 发布了新视频`,
 					`标题：${latestVideo.title}`,
-					`简介：${latestVideo.description}`
-					`链接：https://b23.tv/${liveStat.bvid}`
+					`链接：https://b23.tv/${latestVideo.bvid}`
 				].join('\n'), e.group);
 			}
 		}
