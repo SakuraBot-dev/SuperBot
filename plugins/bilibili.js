@@ -1,5 +1,6 @@
 const api = require('../lib/api');
 const db = require('../lib/db');
+const admin = require('../lib/admin');
 const RateLimiter = require('limiter').RateLimiter;
 const request = require('request');
 const limiter = new RateLimiter(8, 'second');
@@ -166,6 +167,11 @@ module.exports = {
 				const uid = e.msg.substr(10);
 				const sender = e.sender.user_id;
 
+				if(!admin.isAdmin(e.sender.user_id)){
+					api.bot.send.group('¿', e.group);
+					return;
+				}
+
 				const user = await bili.api.info(uid);
 				if(!user){
 					api.bot.send.group('[Bili] 订阅失败：用户信息拉取失败', e.group);
@@ -189,6 +195,11 @@ module.exports = {
 			func: async (e) => {
 				const uid = e.msg.substr(10);
 				const group = e.group;
+
+				if(!admin.isAdmin(e.sender.user_id)){
+					api.bot.send.group('¿', e.group);
+					return;
+				}
 
 				await db.delete('bili').where('uid', uid).where('group', group).execute();
 				api.bot.send.group('[Bili] 删除成功', e.group);
@@ -215,6 +226,11 @@ module.exports = {
 			helper: '.bili update 手动更新订阅',
 			command: /\.bili update/,
 			func: async (e) => {
+				if(!admin.isAdmin(e.sender.user_id)){
+					api.bot.send.group('¿', e.group);
+					return;
+				}
+
 				await bili.update();
 				api.bot.send.group('[Bili] 更新成功', e.group);
 			}

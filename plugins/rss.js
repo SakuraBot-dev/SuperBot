@@ -1,4 +1,5 @@
 const rss = require('rss-parser');
+const admin = require('../lib/admin');
 const api = require('../lib/api')
 const db = require('../lib/db');
 
@@ -37,7 +38,7 @@ const update = async () => {
 module.exports = {
 	plugin: {
 		name: 'RSS订阅器',
-		desc: '不会用别用，不要订阅乱七八糟的东西',
+		desc: 'RSS订阅器',
 		version: '0.0.1',
 		author: '涂山苏苏'
 	},
@@ -65,6 +66,11 @@ module.exports = {
 				const group = e.group;
 				const sender = e.sender.user_id;
 
+				if(!admin.isAdmin(e.sender.user_id)){
+					api.bot.send.group('¿', e.group);
+					return;
+				}
+
 				if(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/g.test(link)){
 					parser.parseURL(link).then(e => {
 						db
@@ -90,6 +96,11 @@ module.exports = {
 			func: async (e) => {
 				const id = e.msg.substr(12);
 				const group = e.group;
+
+				if(!admin.isAdmin(e.sender.user_id)){
+					api.bot.send.group('¿', e.group);
+					return;
+				}
 
 				try{
 					db
@@ -135,6 +146,11 @@ module.exports = {
 			helper: '.rss update	立刻刷新订阅',
 			command: /\.rss update/,
 			func: async (e) => {
+				if(!admin.isAdmin(e.sender.user_id)){
+					api.bot.send.group('¿', e.group);
+					return;
+				}
+
 				await update();
 				api.bot.send.group('[RSS] 刷新成功', e.group);
 			}
