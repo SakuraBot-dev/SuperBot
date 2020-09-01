@@ -10,3 +10,6 @@ config.js
 
 # plugin
 /plugins/call.js
+
+# admin
+admin.json

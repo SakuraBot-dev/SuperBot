@@ -21,5 +21,6 @@ module.exports = {
 	},
 	logger: {
 		level: '',		// 日志等级
-	}
+	},
+	owner: ''			// 所属人QQ号
 }

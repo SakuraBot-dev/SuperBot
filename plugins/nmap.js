@@ -1,4 +1,5 @@
 const api = require('../lib/api');
+const admin = require('../lib/admin');
 const p = require('child_process');
 
 let nmap = null;
@@ -45,6 +46,11 @@ module.exports = {
 			command: /\.nmap (.*)/,
 			func: async (e) => {
 				const ip = e.msg.substr(6);
+
+				if(!admin.isAdmin(e.sender.user_id)){
+					api.bot.send.group('¿', e.group);
+					return;
+				}
 
 				if(block(ip)){
 					api.bot.send.group('你想干啥？', e.group);
