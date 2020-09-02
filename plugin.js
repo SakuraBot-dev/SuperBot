@@ -5,11 +5,53 @@ const logger = require('./lib/logger').main;
 const EventEmitter = require('events').EventEmitter;
 const cmd_event = new EventEmitter();
 
+const startAt = new Date();
+
 // 命令列表
 let cmd_event_list = [];
 
 // 插件列表
 const plugins = [];
+
+const utils = {
+  getUptime: () => {
+    const t = new Date(new Date() - startAt);
+    const days = t.getDate() >= 2 ? `${t.getDate() - 1} days` : null;
+    const hours = `${t.getHours() - 8} hours`;
+    const min = `${t.getMinutes()} minutes`;
+    const sec = `${t.getSeconds()} sec`;
+    const ms = `${t.getMilliseconds()} ms`;
+
+    return [days, hours, min, sec, ms].join(' ');
+  },
+  humanMem: (input) => {
+    let output_n = input;
+    let output_t = 'B';
+
+    if(output_n >= 1e3){
+      output_n = output_n / 1024;
+      output_t = 'KB'
+    }
+
+    if(output_n >= 1e3){
+      output_n = output_n / 1024;
+      output_t = 'MB'
+    }
+
+    if(output_n >= 1e3){
+      output_n = output_n / 1024;
+      output_t = 'GB'
+    }
+
+    if(output_n >= 1e3){
+      output_n = output_n / 1024;
+      output_t = 'TB'
+    }
+
+    return `${Math.round(output_n * 1e3)/1e3} ${output_t}`;
+  }
+}
+
 
 bot.event.on('group_msg', (e) => {
   cmd_event_list.forEach(c => {
@@ -23,7 +65,18 @@ bot.event.on('group_msg', (e) => {
 
   if(e.msg.substr(0,1) === '.'){
     const cmd = e.msg.substr(1).split(' ');
-    if(cmd[0] === 'pm'){
+    if(cmd[0] === 'status'){
+      bot.send.group([
+        `uptime: ${utils.getUptime()}`,
+        `plugins: ${plugins.length}`,
+        `commit: ${require('child_process').execSync('git rev-parse HEAD').toString().trim().substr(0, 7)}`,
+        `node version: ${require('child_process').execSync('node -v').toString().trim()}`,
+        `heap: ${utils.humanMem(process.memoryUsage().heapUsed)}/${utils.humanMem(process.memoryUsage().heapTotal)}`,
+        `memory: ${utils.humanMem(process.memoryUsage().rss)}`,
+        `external: ${utils.humanMem(process.memoryUsage().external)}`,
+        `GitHub: https://git.io/JUYDe`
+      ].join('\n'), e.group);
+    }else if(cmd[0] === 'pm'){
       if(cmd[1] === 'unload'){
         // 卸载插件
         if(!admin.isAdmin(e.sender.user_id)) return;
