@@ -6,6 +6,9 @@ const request = require('request');
 const limiter = new RateLimiter(8, 'second');
 
 const bili = {
+	feed: {},
+	cache: {},
+	offset: 0,
 	utils: {
 		request: {
 			get: (uri) => {
@@ -35,7 +38,25 @@ const bili = {
 					}
 				})
 			}
-		}
+		},
+		init: async () => {
+			const list = await db.select('*').from('bili').queryList();
+			bili.feed = {};
+			list.forEach(e => {
+				bili.cache[e.uid] = {
+					video: e.video,
+					live: e.liveStat
+				};
+
+				if(!bili.feed[e.uid]){
+					bili.feed[e.uid] = [];
+				}
+
+				bili.feed[e.uid].push(e.group);
+			});
+
+			return true;
+		},
 	},
 	api: {
 		liveStat: async (uid) => {
@@ -85,54 +106,69 @@ const bili = {
 		}
 	},
 	update: async () => {
-		api.logger.info(`Bili 正在更新订阅`);
-		const biliList = await db.select('*').from('bili').queryList();
-		for (const e of biliList) {
-			const uid = e.uid;
-			const liveStat = await bili.api.liveStat(uid);
-			const latestVideo = await bili.api.latestVideo(uid);
-			const user = await bili.api.info(uid);
+		const uid = Object.keys(bili.feed)[bili.offset];
+		const groups = bili.feed[uid];
 
+		if(!uid || !groups){
+			return;
+		}
 
-			db.update('bili', {
-				name: user.name
-			}).where('id', e.id).execute();
-			if(liveStat){
-				if(liveStat.liveStatus === 1 && e.liveStat === 'disable'){
-					// 新开播
-					db.update('bili', {
-						liveStat: 'enable'
-					}).where('id', e.id).execute();
+		bili.offset++;
+		if(!Object.keys(bili.feed)[bili.offset]){
+			bili.offset = 0;
+		}
 
+		const liveStat = await bili.api.liveStat(uid);
+		const latestVideo = await bili.api.latestVideo(uid);
+		const user = await bili.api.info(uid);
+
+		db.update('bili', {
+			name: user.name
+		}).where('uid', uid).execute();
+		if(liveStat){
+			if(liveStat.liveStatus === 1 && bili.cache[uid].liveStat === 'disable'){
+				// 新开播
+				db.update('bili', {
+					liveStat: 'enable'
+				}).where('uid', uid).execute();
+
+				bili.cache[uid].liveStat = 'enable';
+
+				groups.forEach(group => {
 					api.bot.send.group([
 						`您订阅的 ${user.name} 开播了`,
 						liveStat.title,
 						`链接：${liveStat.url}`
-					].join('\n'), e.group);
-				}
-
-				if(liveStat.liveStatus === 0 && e.liveStat === 'enable'){
-					// 下播
-					db.update('bili', {
-						liveStat: 'disable'
-					}).where('id', e.id).execute();
-				}
+					].join('\n'), group);
+				})
 			}
 
-			if(latestVideo && latestVideo.bvid !== e.video) {
-				// 新视频发布
-				db.update('bili', {
-					video: latestVideo.bvid
-				}).where('id', e.id).execute();
+			if(liveStat.liveStatus === 0 && bili.cache[uid].liveStat ===  'enable'){
+				// 下播
+				bili.cache[uid].liveStat = 'disable';
 
+				db.update('bili', {
+					liveStat: 'disable'
+				}).where('uid', uid).execute();
+			}
+		}
+
+		if(latestVideo && latestVideo.bvid !== bili.cache[uid].video) {
+			// 新视频发布
+			bili.cache[uid].video = latestVideo.bvid;
+
+			db.update('bili', {
+				video: latestVideo.bvid
+			}).where('uid', uid).execute();
+
+			groups.forEach(group => {
 				api.bot.send.group([
 					`您订阅的 ${user.name} 发布了新视频`,
 					`标题：${latestVideo.title}`,
 					`链接：https://b23.tv/${latestVideo.bvid}`
-				].join('\n'), e.group);
-			}
+				].join('\n'), group);
+			});
 		}
-		api.logger.info(`Bili 订阅更新完成`);
 	}
 }
 
@@ -142,15 +178,16 @@ module.exports = {
 	plugin: {
 		name: '哔哩哔哩',
 		desc: '哔哩哔哩 直播，更新 推送',
-		version: '0.0.1',
+		version: '0.0.2',
 		author: '涂山苏苏'
 	},
 	events: {
 		// 事件列表
-		onload: (e) => {
+		onload: async (e) => {
+			await bili.utils.init();
 			timer = setInterval(() => {
 				bili.update().then(r => {});
-			}, 6e4);
+			}, 500);
 			api.logger.info('哔哩哔哩 开始运行');
 		},
 		onunload: (e) => {
@@ -170,6 +207,10 @@ module.exports = {
 				if(!admin.isAdmin(e.sender.user_id)){
 					api.bot.send.group('¿', e.group);
 					return;
+				}
+
+				if(bili.feed[uid]){
+					api.bot.send.group('[Bili] 已经订阅过了这个up主', e.group);
 				}
 
 				const user = await bili.api.info(uid);
@@ -202,6 +243,7 @@ module.exports = {
 				}
 
 				await db.delete('bili').where('uid', uid).where('group', group).execute();
+				await bili.utils.init();
 				api.bot.send.group('[Bili] 删除成功', e.group);
 			}
 		},
