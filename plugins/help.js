@@ -28,6 +28,7 @@ module.exports = {
 					'.pm unload [id]	卸载插件',
 					'.pm reload [id]	重载插件',
 					'.pm info [name]	查看插件信息',
+					'.pm cmd [id]	查看插件命令列表',
 					'.pm list	查看插件列表',
 				].join('\n'), e.group);
 			}

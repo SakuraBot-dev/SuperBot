@@ -5,8 +5,6 @@ const logger = require('./lib/logger').main;
 const EventEmitter = require('events').EventEmitter;
 const cmd_event = new EventEmitter();
 
-const startAt = new Date();
-
 // 命令列表
 let cmd_event_list = [];
 
@@ -15,14 +13,13 @@ const plugins = [];
 
 const utils = {
   getUptime: () => {
-    const t = new Date(new Date() - startAt);
-    const days = t.getDate() >= 2 ? `${t.getDate() - 1} days` : null;
-    const hours = `${t.getHours() - 8} hours`;
-    const min = `${t.getMinutes()} minutes`;
-    const sec = `${t.getSeconds()} sec`;
-    const ms = `${t.getMilliseconds()} ms`;
+    const uptime = Math.round(process.uptime());
+    const days = `${~~(uptime/(3600*24))}`;
+    const hours = `${~~((uptime-(days*3600*24))/3600)}`;
+    const min = `${~~((uptime-(days*3600*24)-(hours*3600))/60)}`;
+    const sec = `${(uptime-(days*3600*24)-(hours*3600)-(min*60))}`;
 
-    return [days, hours, min, sec, ms].join(' ');
+    return `${days} days, ${hours}:${min}:${sec}`;
   },
   humanMem: (input) => {
     let output_n = input;
