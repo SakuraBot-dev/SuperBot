@@ -13,3 +13,6 @@ config.js
 
 # admin
 admin.json
+
+# data
+data

@@ -35,17 +35,30 @@ const utils = {
 
 		api.logger.info(`向 ${api.config.vtb.groups.length} 个群推送弹幕信息`);
 	},
-	sendLiveStat: (mid) => {
+	sendLiveStat: (mid, name, title, online, link) => {
 		api.logger.info(`正在推送 ${cache.vtb[mid].name}(${mid}) 的开播信息`);
 
 		api.config.vtb.groups.forEach(group => {
 			api.bot.send.group([
-				`${cache.vtb[mid].name} 开播了`,
-				cache.vtb[mid].title,
-				cache.vtb[mid].link,
-				`立即与 ${cache.vtb[mid].online} 位小伙伴一起打call~`
+				`${name} 开播了`,
+				title,
+				link,
+				`立即与 ${online} 位小伙伴一起打call~`
 			].join('\n'), group)
 		});
+
+		const r = api.data.get('vtb', `feed_${mid}`);
+
+		if(r){
+			r.split(',').forEach(group => {
+				api.bot.send.group([
+					`${name} 开播了`,
+					title,
+					link,
+					`立即与 ${online} 位小伙伴一起打call~`
+				].join('\n'), group)
+			});
+		}
 
 		api.logger.info(`向 ${api.config.vtb.groups.length} 个群推送开播信息`);
 	}
@@ -57,7 +70,7 @@ module.exports = {
 	plugin: {
 		name: 'vtb',
 		desc: 'vtb开播监控，直播弹幕监控',
-		version: '0.0.1',
+		version: '1.0.0',
 		author: '涂山苏苏'
 	},
 	events: {
@@ -111,14 +124,14 @@ module.exports = {
 						}
 					}else{
 						cache.vtb[e.mid].link = `https://live.bilibili.com/${e.roomid}`;
-						cache.vtb[e.mid].name = e.name;
+						cache.vtb[e.mid].name = e.uname;
 						cache.vtb[e.mid].title = e.title;
 						cache.vtb[e.mid].online = e.online;
 
 						if(!cache.vtb[e.mid].stat && e.liveStatus === 1){
 							// 新开播
 							api.logger.debug(JSON.stringify(e));
-							utils.sendLiveStat(e.mid);
+							utils.sendLiveStat(e.mid, e.uname, e.title, e.online, `https://live.bilibili.com/${e.roomid}`);
 						}
 
 						cache.vtb[e.mid].stat = (e.liveStatus === 1);
@@ -153,6 +166,47 @@ module.exports = {
 					`数据来源：dd-center (https://vtbs.moe)`,
 					`不知道写啥了，就先这样吧（雾`
 				].join('\n'), e.group);
+			}
+		},
+		{
+			id: 'add',
+			helper: '.vtb add [uid]	订阅直播通知',
+			command: /\.vtb add (.*)/,
+			func: async (e) => {
+				const uid = e.msg.substr(9);
+
+				const r = api.data.get('vtb', `feed_${uid}`);
+				if(r){
+					const feed = r.split(',');
+					feed.push(e.group);
+					api.data.update('vtb', `feed_${uid}`, feed.join(','))
+				}else{
+					api.data.add('vtb', `feed_${uid}`, e.group);
+				}
+
+				api.bot.send.group('[vtb] 订阅成功', e.group);
+			}
+		},
+		{
+			id: 'del',
+			helper: '.vtb del [uid]	订阅直播通知',
+			command: /\.vtb del (.*)/,
+			func: async (e) => {
+				const uid = e.msg.substr(9);
+
+				const r = api.data.get('vtb', `feed_${uid}`);
+				if(r){
+					const feed = r.split(',');
+					const tmp = [];
+					feed.forEach(n => {
+						if(n !== String(e.group)){
+							tmp.push(n)
+						}
+					})
+					api.data.update('vtb', `feed_${uid}`, tmp.join(','))
+				}
+
+				api.bot.send.group('[vtb] 取消成功', e.group);
 			}
 		}
 	]
