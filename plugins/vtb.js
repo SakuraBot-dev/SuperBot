@@ -110,17 +110,18 @@ module.exports = {
 							online: e.lastLive.online
 						}
 					}else{
+						cache.vtb[e.mid].link = `https://live.bilibili.com/${e.roomid}`;
+						cache.vtb[e.mid].name = e.name;
+						cache.vtb[e.mid].title = e.title;
+						cache.vtb[e.mid].online = e.online;
+
 						if(!cache.vtb[e.mid].stat && e.liveStatus === 1){
 							// 新开播
 							api.logger.debug(JSON.stringify(e));
 							utils.sendLiveStat(e.mid);
 						}
 
-						cache.vtb[e.mid].link = `https://live.bilibili.com/${e.roomid}`;
-						cache.vtb[e.mid].name = e.name;
-						cache.vtb[e.mid].title = e.title;
 						cache.vtb[e.mid].stat = (e.liveStatus === 1);
-						cache.vtb[e.mid].online = e.online;
 					}
 				})
 			});
