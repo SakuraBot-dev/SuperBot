@@ -51,6 +51,8 @@ const utils = {
 	}
 }
 
+let timer = null;
+
 module.exports = {
 	plugin: {
 		name: 'vtb',
@@ -65,6 +67,10 @@ module.exports = {
 				reconnection: true,
 				transports: ['websocket', 'polling']
 			});
+
+			timer = setInterval(() => {
+				utils.sendHawk();
+			}, 3e5);
 
 			socket.on('connect', () => {
 				api.logger.info('vtb Socket连接成功')
@@ -83,8 +89,6 @@ module.exports = {
 
 				cache.hawk.day = data.day.slice(0, 10);
 				cache.hawk.h = data.h.slice(0, 10);
-
-				utils.sendHawk();
 			});
 
 			socket.on('info', (data) => {
@@ -121,6 +125,12 @@ module.exports = {
 				socket.removeAllListeners();
 				socket.close();
 			}
+
+			if(timer){
+				clearInterval(timer);
+			}
+
+			timer = null;
 			socket = null;
 			api.logger.info(`vtb 停止运行`)
 		}
