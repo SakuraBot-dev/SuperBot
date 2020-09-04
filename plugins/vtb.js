@@ -63,9 +63,16 @@ module.exports = {
 	events: {
 		// 事件列表
 		onload: (e) => {
-			socket = io.connect('https://api.vtbs.moe', {
+			socket = io.connect(api.config.vtb.host, {
 				reconnection: true,
+				autoConnect: false,
 				transports: ['websocket', 'polling']
+			});
+
+			socket.open();
+
+			socket.on('ping', (data) => {
+				api.logger.debug(`vtb ping: ${data}`);
 			});
 
 			timer = setInterval(() => {
@@ -100,7 +107,7 @@ module.exports = {
 							name: e.uname,
 							title: e.title,
 							stat: (e.liveStatus === 1),
-							online: e.online
+							online: e.lastLive.online
 						}
 					}else{
 						if(!cache.vtb[e.mid].stat && e.liveStatus === 1){

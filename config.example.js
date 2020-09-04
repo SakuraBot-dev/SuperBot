@@ -19,6 +19,7 @@ module.exports = {
 			cookie: ''		// 微步的cookie
 		},
 		vtb: {
+			host: 'https://api.vtbs.moe',		// socket.io的连接地址
 			groups: []		// vtb插件消息发送群号
 		}
 	},
