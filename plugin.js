@@ -69,7 +69,7 @@ bot.event.on('group_msg', (e) => {
         `commit: ${require('child_process').execSync('git rev-parse HEAD').toString().trim().substr(0, 7)}`,
         `node version: ${require('child_process').execSync('node -v').toString().trim()}`,
         `heap: ${utils.humanMem(process.memoryUsage().heapUsed)}/${utils.humanMem(process.memoryUsage().heapTotal)}`,
-        `memory: ${utils.humanMem(process.memoryUsage().rss)}`,
+        `allocated memory: ${utils.humanMem(process.memoryUsage().rss)}`,
         `external: ${utils.humanMem(process.memoryUsage().external)}`,
         `GitHub: https://git.io/JUYDe`
       ].join('\n'), e.group);

@@ -17,6 +17,9 @@ module.exports = {
 		},
 		sec: {
 			cookie: ''		// 微步的cookie
+		},
+		vtb: {
+			groups: []		// vtb插件消息发送群号
 		}
 	},
 	logger: {
