@@ -61,15 +61,25 @@ module.exports = {
 	events: {
 		// 事件列表
 		onload: (e) => {
-			socket = io.connect('wss://api.vtbs.moe:443', {
+			socket = io.connect('https://api.vtbs.moe', {
 				reconnection: true,
-				reconnectionDelay: 100
+				transports: ['websocket', 'polling']
+			});
+
+			socket.on('connect', () => {
+				api.logger.info('vtb Socket连接成功')
+			});
+
+			socket.on('disconnect', (reason) => {
+				api.logger.warn(`vtb Socket断开连接: ${reason}`);
+			});
+
+			socket.on('error', (error) => {
+				api.logger.error(`vtb Socket错误: ${JSON.stringify(error)}`);
 			});
 
 			socket.on('hawk', (data) => {
 				// 弹幕统计数据
-
-				api.logger.debug(JSON.stringify(data));
 
 				cache.hawk.day = data.day.slice(0, 10);
 				cache.hawk.h = data.h.slice(0, 10);
