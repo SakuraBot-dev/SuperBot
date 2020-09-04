@@ -126,12 +126,12 @@ module.exports = {
 						cache.vtb[e.mid].link = `https://live.bilibili.com/${e.roomid}`;
 						cache.vtb[e.mid].name = e.uname;
 						cache.vtb[e.mid].title = e.title;
-						cache.vtb[e.mid].online = e.online;
+						cache.vtb[e.mid].online = e.lastLive.online;
 
 						if(!cache.vtb[e.mid].stat && e.liveStatus === 1){
 							// 新开播
 							api.logger.debug(JSON.stringify(e));
-							utils.sendLiveStat(e.mid, e.uname, e.title, e.online, `https://live.bilibili.com/${e.roomid}`);
+							utils.sendLiveStat(e.mid, e.uname, e.title, e.lastLive.online, `https://live.bilibili.com/${e.roomid}`);
 						}
 
 						cache.vtb[e.mid].stat = (e.liveStatus === 1);
