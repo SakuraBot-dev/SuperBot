@@ -161,6 +161,17 @@ module.exports = {
 			id: 'info',
 			helper: '.vtb info	查看插件信息',
 			command: /\.vtb info/,
+			test: [{
+				name: 'vtb插件 info 命令测试',
+				cmd: `.vtb info`,
+				msg: [
+					[
+						`数据来源：dd-center (https://vtbs.moe)`,
+						`不知道写啥了，就先这样吧（雾`
+					].join('\n')
+				],
+				timeout: 5e2
+			}],
 			func: async (e) => {
 				api.bot.send.group([
 					`数据来源：dd-center (https://vtbs.moe)`,
@@ -172,6 +183,14 @@ module.exports = {
 			id: 'add',
 			helper: '.vtb add [uid]	订阅直播通知',
 			command: /\.vtb add (.*)/,
+			test: [{
+				name: 'vtb插件 add 命令测试',
+				cmd: `.vtb add 0`,
+				msg: [
+					'[vtb] 订阅成功'
+				],
+				timeout: 5e2
+			}],
 			func: async (e) => {
 				const uid = e.msg.substr(9);
 
@@ -190,6 +209,14 @@ module.exports = {
 		{
 			id: 'del',
 			helper: '.vtb del [uid]	订阅直播通知',
+			test: [{
+				name: 'vtb插件 del 命令测试',
+				cmd: `.vtb del 0`,
+				msg: [
+					'[vtb] 取消成功'
+				],
+				timeout: 5e2
+			}],
 			command: /\.vtb del (.*)/,
 			func: async (e) => {
 				const uid = e.msg.substr(9);

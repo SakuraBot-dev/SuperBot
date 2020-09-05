@@ -1,6 +1,7 @@
 const fs = require('fs');
 const bot = require('./lib/bot');
 const admin = require('./lib/admin');
+const test = require('./lib/test');
 const logger = require('./lib/logger').main;
 const EventEmitter = require('events').EventEmitter;
 const cmd_event = new EventEmitter();
@@ -10,6 +11,8 @@ let cmd_event_list = [];
 
 // 插件列表
 const plugins = [];
+
+const isCi = (process.argv.indexOf('ci') !== -1);
 
 const utils = {
   getUptime: () => {
@@ -67,7 +70,8 @@ bot.event.on('group_msg', (e) => {
         `uptime: ${utils.getUptime()}`,
         `plugins: ${plugins.length}`,
         `commit: ${require('child_process').execSync('git rev-parse HEAD').toString().trim().substr(0, 7)}`,
-        `node version: ${require('child_process').execSync('node -v').toString().trim()}`,
+        `node version: ${process.versions.node}`,
+        `v8 version: ${process.versions.v8}`,
         `heap: ${utils.humanMem(process.memoryUsage().heapUsed)}/${utils.humanMem(process.memoryUsage().heapTotal)}`,
         `allocated memory: ${utils.humanMem(process.memoryUsage().rss)}`,
         `external: ${utils.humanMem(process.memoryUsage().external)}`,
@@ -301,6 +305,8 @@ const pluginMgr = {
         status: 'running',
         file: file,
       };
+
+      if(isCi) test.run(plugins[id]);
 
       pluginMgr.bind(id, plugins[id].in.events);
       pluginMgr.bind_commands(id, plugins[id].in.commands);

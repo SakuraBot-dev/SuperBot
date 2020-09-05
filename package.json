@@ -1,6 +1,10 @@
 {
   "name": "bot",
   "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js",
+    "ci": "node app.js ci"
+  },
   "dependencies": {
     "@types/socket.io-client": "^1.4.33",
     "ali-mysql-client": "^1.0.4",
