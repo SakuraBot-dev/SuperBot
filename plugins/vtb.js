@@ -11,6 +11,8 @@ const cache = {
 	vtb: [],
 }
 
+let timer = null;
+
 const utils = {
 	sendHawk: () => {
 		api.logger.info('开始推送弹幕信息');
@@ -61,10 +63,72 @@ const utils = {
 		}
 
 		api.logger.info(`向 ${api.config.vtb.groups.length} 个群推送开播信息`);
+	},
+	init: () => {
+		socket = io.connect(api.config.vtb.host, {
+			reconnection: true,
+			autoConnect: false,
+			transports: ['websocket', 'polling']
+		});
+
+		socket.open();
+
+		socket.on('ping', (data) => {
+			api.logger.debug(`vtb ping: ${data}`);
+		});
+
+		timer = setInterval(() => {
+			utils.sendHawk();
+		}, 3e5);
+
+		socket.on('connect', () => {
+			api.logger.info('vtb Socket连接成功')
+		});
+
+		socket.on('disconnect', (reason) => {
+			api.logger.warn(`vtb Socket断开连接: ${reason}`);
+		});
+
+		socket.on('error', (error) => {
+			api.logger.error(`vtb Socket错误: ${JSON.stringify(error)}`);
+		});
+
+		socket.on('hawk', (data) => {
+			// 弹幕统计数据
+
+			cache.hawk.day = data.day.slice(0, 10);
+			cache.hawk.h = data.h.slice(0, 10);
+		});
+
+		socket.on('info', (data) => {
+			// 直播统计数据
+			data.forEach(e => {
+				if(!cache.vtb[e.mid]){
+					cache.vtb[e.mid] = {
+						link: `https://live.bilibili.com/${e.roomid}`,
+						name: e.uname,
+						title: e.title,
+						stat: (e.liveStatus === 1),
+						online: e.lastLive.online
+					}
+				}else{
+					cache.vtb[e.mid].link = `https://live.bilibili.com/${e.roomid}`;
+					cache.vtb[e.mid].name = e.uname;
+					cache.vtb[e.mid].title = e.title;
+					cache.vtb[e.mid].online = e.lastLive.online;
+
+					if(!cache.vtb[e.mid].stat && e.liveStatus === 1){
+						// 新开播
+						api.logger.debug(JSON.stringify(e));
+						utils.sendLiveStat(e.mid, e.uname, e.title, e.lastLive.online, `https://live.bilibili.com/${e.roomid}`);
+					}
+
+					cache.vtb[e.mid].stat = (e.liveStatus === 1);
+				}
+			})
+		});
 	}
 }
-
-let timer = null;
 
 module.exports = {
 	plugin: {
@@ -76,75 +140,14 @@ module.exports = {
 	events: {
 		// 事件列表
 		onload: (e) => {
-			socket = io.connect(api.config.vtb.host, {
-				reconnection: true,
-				autoConnect: false,
-				transports: ['websocket', 'polling']
-			});
-
-			socket.open();
-
-			socket.on('ping', (data) => {
-				api.logger.debug(`vtb ping: ${data}`);
-			});
-
-			timer = setInterval(() => {
-				utils.sendHawk();
-			}, 3e5);
-
-			socket.on('connect', () => {
-				api.logger.info('vtb Socket连接成功')
-			});
-
-			socket.on('disconnect', (reason) => {
-				api.logger.warn(`vtb Socket断开连接: ${reason}`);
-			});
-
-			socket.on('error', (error) => {
-				api.logger.error(`vtb Socket错误: ${JSON.stringify(error)}`);
-			});
-
-			socket.on('hawk', (data) => {
-				// 弹幕统计数据
-
-				cache.hawk.day = data.day.slice(0, 10);
-				cache.hawk.h = data.h.slice(0, 10);
-			});
-
-			socket.on('info', (data) => {
-				// 直播统计数据
-				data.forEach(e => {
-					if(!cache.vtb[e.mid]){
-						cache.vtb[e.mid] = {
-							link: `https://live.bilibili.com/${e.roomid}`,
-							name: e.uname,
-							title: e.title,
-							stat: (e.liveStatus === 1),
-							online: e.lastLive.online
-						}
-					}else{
-						cache.vtb[e.mid].link = `https://live.bilibili.com/${e.roomid}`;
-						cache.vtb[e.mid].name = e.uname;
-						cache.vtb[e.mid].title = e.title;
-						cache.vtb[e.mid].online = e.lastLive.online;
-
-						if(!cache.vtb[e.mid].stat && e.liveStatus === 1){
-							// 新开播
-							api.logger.debug(JSON.stringify(e));
-							utils.sendLiveStat(e.mid, e.uname, e.title, e.lastLive.online, `https://live.bilibili.com/${e.roomid}`);
-						}
-
-						cache.vtb[e.mid].stat = (e.liveStatus === 1);
-					}
-				})
-			});
+			utils.init();
 
 			api.logger.info(`vtb 开始运行`)
 		},
 		onunload: (e) => {
 			if(socket) {
-				socket.removeAllListeners();
 				socket.close();
+				socket.disconnect();
 			}
 
 			if(timer){
@@ -208,7 +211,7 @@ module.exports = {
 		},
 		{
 			id: 'del',
-			helper: '.vtb del [uid]	订阅直播通知',
+			helper: '.vtb del [uid]	取消订阅直播通知',
 			test: [{
 				name: 'vtb插件 del 命令测试',
 				cmd: `.vtb del 0`,
