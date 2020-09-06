@@ -19,8 +19,8 @@ const update = async () => {
 					const groups = await db.select('*').from('feed').where('url', _rss.url).queryList();
 					groups.forEach(e => {
 						api.bot.send.group([
-							`[RSS] 您订阅的 ${rss_result.title} 更新了`,
-							`标题：${rss_result.items[0].title}`,
+							`[RSS] 您订阅的 ${rss_result.title.trim()} 更新了`,
+							`标题：${rss_result.items[0].title.trim()}`,
 							`链接：${rss_result.items[0].link}`
 						].join('\n'), e.group);
 					});
