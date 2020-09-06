@@ -163,7 +163,7 @@ module.exports = {
 		{
 			id: 'info',
 			helper: '.vtb info	查看插件信息',
-			command: /\.vtb info/,
+			command: /^\.vtb info$/,
 			test: [{
 				name: 'vtb插件 info 命令测试',
 				cmd: `.vtb info`,
@@ -185,7 +185,7 @@ module.exports = {
 		{
 			id: 'add',
 			helper: '.vtb add [uid]	订阅直播通知',
-			command: /\.vtb add (.*)/,
+			command: /^\.vtb add (.*)$/,
 			test: [{
 				name: 'vtb插件 add 命令测试',
 				cmd: `.vtb add 0`,
@@ -220,7 +220,7 @@ module.exports = {
 				],
 				timeout: 5e2
 			}],
-			command: /\.vtb del (.*)/,
+			command: /^\.vtb del (.*)$/,
 			func: async (e) => {
 				const uid = e.msg.substr(9);
 

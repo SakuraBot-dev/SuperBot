@@ -43,7 +43,7 @@ module.exports = {
 		{
 			id: 'nmap',
 			helper: '.nmap [IP/域名] 启动nmap扫描域名或IP',
-			command: /\.nmap (.*)/,
+			command: /^\.nmap (.*)$/,
 			func: async (e) => {
 				const ip = e.msg.substr(6);
 

@@ -146,7 +146,7 @@ module.exports = {
 		{
 			id: 'ip',
 			helper: '.query [IP/域名] 查询IP或域名的信息',
-			command: /\.query\ (.*)/,
+			command: /^\.query\ (.*)$/,
 			func: async (e) => {
 				const input = e.msg.substr(7);
 				api.bot.send.group('正在查询', e.group);

@@ -26,7 +26,7 @@ module.exports = {
 		{
 			id: 'nslookup',
 			helper: '.nslookup [域名] [类型] 查询域名的DNS记录',
-			command: /\.nslookup (.*) (.*)/,
+			command: /^\.nslookup (.*) (.*)$/,
 			func: async (e) => {
 				const input = e.msg.substr(10);
 				const domain = input.split(' ')[0];

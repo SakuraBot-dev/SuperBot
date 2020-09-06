@@ -60,7 +60,7 @@ module.exports = {
 		{
 			id: 'add',
 			helper: '.rss add [链接]	添加订阅',
-			command: /\.rss add (.*)/,
+			command: /^\.rss add (.*)$/,
 			func: async (e) => {
 				const link = e.msg.substr(9);
 				const group = e.group;
@@ -92,7 +92,7 @@ module.exports = {
 		{
 			id: 'remove',
 			helper: '.rss remove [id]	删除订阅',
-			command: /\.rss remove (.*)/,
+			command: /^\.rss remove (.*)$/,
 			func: async (e) => {
 				const id = e.msg.substr(12);
 				const group = e.group;

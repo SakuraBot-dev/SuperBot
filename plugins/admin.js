@@ -22,7 +22,7 @@ module.exports = {
 		{
 			id: 'add',
 			helper: '.m add [QQ号] 添加管理员',
-			command: /\.m add (.*)/,
+			command: /^\.m add (.*)$/,
 			func: async (e) => {
 				const qq = e.msg.substr(7);
 				const sender = e.sender.user_id;
@@ -41,7 +41,7 @@ module.exports = {
 		{
 			id: 'rm',
 			helper: '.m rm [QQ号] 删除管理员',
-			command: /\.m rm (.*)/,
+			command: /%\.m rm (.*)$/,
 			func: async (e) => {
 				const qq = e.msg.substr(7);
 				const sender = e.sender.user_id;
@@ -60,7 +60,7 @@ module.exports = {
 		{
 			id: 'ls',
 			helper: '.m ls 查看管理员列表',
-			command: /\.m ls/,
+			command: /^\.m ls$/,
 			func: async (e) => {
 				api.bot.send.group([
 					'=====AdminManager=====',

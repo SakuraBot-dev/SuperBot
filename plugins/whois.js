@@ -107,7 +107,7 @@ module.exports = {
 		{
 			id: 'icp',
 			helper: '.icp [域名] 查询域名备案信息',
-			command: /\.icp\ (.*)/,
+			command: /^\.icp\ (.*)$/,
 			func: async (e) => {
 				const domain = e.msg.substr(4);
 

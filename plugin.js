@@ -16,39 +16,26 @@ const isCi = (process.argv.indexOf('ci') !== -1);
 
 const utils = {
   getUptime: () => {
-    const uptime = Math.round(process.uptime());
+    const uptime = process.uptime();
     const days = `${~~(uptime/(3600*24))}`;
-    const hours = `${~~((uptime-(days*3600*24))/3600)}`;
-    const min = `${~~((uptime-(days*3600*24)-(hours*3600))/60)}`;
-    const sec = `${(uptime-(days*3600*24)-(hours*3600)-(min*60))}`;
+    const t = new Date(uptime*1e3);
 
-    return `${days} days, ${hours}:${min}:${sec}`;
+    return `${days} days, ${t.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour12: false })}`;
   },
-  humanMem: (input) => {
-    let output_n = input;
-    let output_t = 'B';
-
-    if(output_n >= 1e3){
-      output_n = output_n / 1024;
-      output_t = 'KB'
+  humanMem: (bytes) => {
+    if(bytes > Number.MAX_SAFE_INTEGER) {
+      return "This file's size (as bytes) has exceeded the MAX_SAFE_INTEGER limitation of float64.";
     }
-
-    if(output_n >= 1e3){
-      output_n = output_n / 1024;
-      output_t = 'MB'
+    const units = ["B", "KB", "MB", "GB", "TB"];
+    let result = "";
+    for(let i = units.length - 1; i >= 0; i--) {
+      if(bytes >= 1024 ** i) {
+        result += ~~(bytes / (1024 ** i));
+        result += `${units[i]} `;
+        bytes %= 1024 ** i;
+      }
     }
-
-    if(output_n >= 1e3){
-      output_n = output_n / 1024;
-      output_t = 'GB'
-    }
-
-    if(output_n >= 1e3){
-      output_n = output_n / 1024;
-      output_t = 'TB'
-    }
-
-    return `${Math.round(output_n * 1e3)/1e3} ${output_t}`;
+    return result.trim();
   }
 }
 
