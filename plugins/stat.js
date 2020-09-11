@@ -26,6 +26,7 @@ module.exports = {
 				api.bot.send.group([
 					`接收消息: ${api.bot.stat.receive || 'unknown'} 条`,
 					`发送消息: ${api.bot.stat.send || 'unknown'} 条`,
+					`raw消息: ${api.bot.send.raw || 'unknown'} 条`
 				].join('\n'), e.group);
 			}
 		}
