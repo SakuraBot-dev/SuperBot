@@ -204,7 +204,7 @@ module.exports = {
 
 				const f = api.data.get('steam', `feed_${id}`);
 				if(r){
-					f.push(id);
+					f.push(e.group);
 					api.data.update('steam', `feed_${id}`, f);
 				}else{
 					api.data.add('steam', `feed_${id}`, [e.group]);
