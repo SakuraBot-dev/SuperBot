@@ -29,12 +29,12 @@ module.exports = {
 
 				if(admin.isOwner(sender)){
 					if(admin.addAdmin(qq)){
-						api.bot.send.group('[AdminManager] 添加成功', e.group);
+						api.bot.socket.send.group('[AdminManager] 添加成功', e.group);
 					}else{
-						api.bot.send.group('[AdminManager] 添加失败', e.group);
+						api.bot.socket.send.group('[AdminManager] 添加失败', e.group);
 					}
 				}else{
-					api.bot.send.group('[AdminManager] 你想干啥？', e.group);
+					api.bot.socket.send.group('[AdminManager] 你想干啥？', e.group);
 				}
 			}
 		},
@@ -48,12 +48,12 @@ module.exports = {
 
 				if(admin.isOwner(sender)){
 					if(admin.removeAdmin(qq)){
-						api.bot.send.group('[AdminManager] 删除成功', e.group);
+						api.bot.socket.send.group('[AdminManager] 删除成功', e.group);
 					}else{
-						api.bot.send.group('[AdminManager] 删除失败', e.group);
+						api.bot.socket.send.group('[AdminManager] 删除失败', e.group);
 					}
 				}else{
-					api.bot.send.group('[AdminManager] 你想干啥？', e.group);
+					api.bot.socket.send.group('[AdminManager] 你想干啥？', e.group);
 				}
 			}
 		},
@@ -62,7 +62,7 @@ module.exports = {
 			helper: '.m ls 查看管理员列表',
 			command: /^\.m ls$/,
 			func: async (e) => {
-				api.bot.send.group([
+				api.bot.socket.send.group([
 					'=====AdminManager=====',
 					admin.list.join('\n'),
 					'=====AdminManager====='

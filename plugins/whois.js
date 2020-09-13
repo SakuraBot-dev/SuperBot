@@ -26,13 +26,13 @@ module.exports = {
 			command: /\.whois\ ip\ (.*)/,
 			func: async (e) => {
 				const ip = e.msg.substr(10);
-				api.bot.send.group('正在查询', e.group);
+				api.bot.socket.send.group('正在查询', e.group);
 				request(`https://open.imoe.xyz/prod/whois/ip/${ip}`, {}, (err, res, body) => {
 					if(res.statusCode === 200 || !err){
 						try{
 							const info = JSON.parse(body);
 							if(!info.success){
-								api.bot.send.group('查询失败', e.group);
+								api.bot.socket.send.group('查询失败', e.group);
 							}else{
 								const country = info.country;		// 国家
 								const region = info.region;			// 省份
@@ -42,7 +42,7 @@ module.exports = {
 								const org = info.org;						// 所属组织
 								const isp = info.isp;						// 运营商
 
-								api.bot.send.group([
+								api.bot.socket.send.group([
 									`IP: ${ip}`,
 									`类型: ${type}`,
 									`国家: ${country}`,
@@ -54,10 +54,10 @@ module.exports = {
 								].join('\n'), e.group);
 							}
 						}catch (e) {
-							api.bot.send.group('查询失败', e.group);
+							api.bot.socket.send.group('查询失败', e.group);
 						}
 					}else{
-						api.bot.send.group('查询失败', e.group);
+						api.bot.socket.send.group('查询失败', e.group);
 					}
 				});
 			}
@@ -68,13 +68,13 @@ module.exports = {
 			command: /\.whois\ domain\ (.*)/,
 			func: async (e) => {
 				const domain = e.msg.substr(14);
-                api.bot.send.group('正在查询...', e.group);
+                api.bot.socket.send.group('正在查询...', e.group);
 				request(`https://api.devopsclub.cn/api/whoisquery?domain=${domain}&token=${config.plugin.whois.token}`, {}, (err, res, body) => {
 					if(res.statusCode === 200 || !err){
 						try{
 							const info = JSON.parse(body);
 							if(info.code !== 0){
-								api.bot.send.group('查询失败', e.group);
+								api.bot.socket.send.group('查询失败', e.group);
 							}else{
 								const sponsoringRegistrar = info.data.data.sponsoringRegistrar;
 								const registrationTime = info.data.data.registrationTime;
@@ -84,7 +84,7 @@ module.exports = {
 								const expirationTime = info.data.data.expirationTime;
 								const domainStatus = info.data.data.domainStatus;
 
-								api.bot.send.group([
+								api.bot.socket.send.group([
 									`域名: ${domain}`,
 									`注册商: ${sponsoringRegistrar}`,
 									`域名状态: ${domainStatus}`,
@@ -96,10 +96,10 @@ module.exports = {
 								].join('\n'), e.group);
 							}
 						}catch (e) {
-							api.bot.send.group('查询失败', e.group);
+							api.bot.socket.send.group('查询失败', e.group);
 						}
 					}else{
-						api.bot.send.group('查询失败', e.group);
+						api.bot.socket.send.group('查询失败', e.group);
 					}
 				});
 			}
@@ -111,16 +111,16 @@ module.exports = {
 			func: async (e) => {
 				const domain = e.msg.substr(4);
 
-				api.bot.send.group('正在查询', e.group);
+				api.bot.socket.send.group('正在查询', e.group);
 				request(`https://api.devopsclub.cn/api/icpquery?url=${domain}&token=${config.plugin.whois.token}`, {}, (err, res, body) => {
 					if(res.statusCode === 200 || !err){
 						try{
 							const info = JSON.parse(body);
 							if(info.code !== 0){
 								if(info.msg === 'icp information does not exist'){
-									api.bot.send.group('未找到备案信息', e.group);
+									api.bot.socket.send.group('未找到备案信息', e.group);
 								}else{
-									api.bot.send.group('查询失败', e.group);
+									api.bot.socket.send.group('查询失败', e.group);
 								}
 							}else {
 								const name = info.data.organizer_name.trim();							// 组织名/姓名
@@ -129,7 +129,7 @@ module.exports = {
 								const index = info.data.site_index_url.trim();						// 首页链接
 								const siteName = info.data.site_name.trim();							// 站点名称
 								const time = info.data.review_time.trim();								// 审查日期
-								api.bot.send.group([
+								api.bot.socket.send.group([
 									`组织名/姓名: ${name}`,
 									`类型: ${type}`,
 									`备案号: ${icpn}`,
@@ -139,10 +139,10 @@ module.exports = {
 								].join('\n'), e.group);
 							}
 						}catch (e) {
-							api.bot.send.group('查询失败', e.group);
+							api.bot.socket.send.group('查询失败', e.group);
 						}
 					}else{
-						api.bot.send.group('查询失败', e.group);
+						api.bot.socket.send.group('查询失败', e.group);
 					}
 				});
 			}

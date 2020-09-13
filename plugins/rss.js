@@ -18,7 +18,7 @@ const update = async () => {
 				if(id !== _rss.last_id) {
 					const groups = await db.select('*').from('feed').where('url', _rss.url).queryList();
 					groups.forEach(e => {
-						api.bot.send.group([
+						api.bot.socket.send.group([
 							`[RSS] 您订阅的 ${rss_result.title.trim()} 更新了`,
 							`标题：${rss_result.items[0].title.trim()}`,
 							`链接：${rss_result.items[0].link}`
@@ -67,7 +67,7 @@ module.exports = {
 				const sender = e.sender.user_id;
 
 				if(!admin.isAdmin(e.sender.user_id)){
-					api.bot.send.group('¿', e.group);
+					api.bot.socket.send.group('¿', e.group);
 					return;
 				}
 
@@ -80,12 +80,12 @@ module.exports = {
 						.column('user', sender)
 						.column('status', 'enable')
 						.execute();
-						api.bot.send.group('[RSS] 订阅成功', group);
+						api.bot.socket.send.group('[RSS] 订阅成功', group);
 					}).catch(e => {
-						api.bot.send.group('[RSS] 订阅失败', group);
+						api.bot.socket.send.group('[RSS] 订阅失败', group);
 					});
 				}else{
-					api.bot.send.group('[RSS] 请填写正确的链接', group);
+					api.bot.socket.send.group('[RSS] 请填写正确的链接', group);
 				}
 			}
 		},
@@ -98,7 +98,7 @@ module.exports = {
 				const group = e.group;
 
 				if(!admin.isAdmin(e.sender.user_id)){
-					api.bot.send.group('¿', e.group);
+					api.bot.socket.send.group('¿', e.group);
 					return;
 				}
 
@@ -108,9 +108,9 @@ module.exports = {
 					.where('id', id)
 					.where('group', group)
 					.execute();
-					api.bot.send.group('[RSS] 删除成功', group);
+					api.bot.socket.send.group('[RSS] 删除成功', group);
 				}catch (e) {
-					api.bot.send.group('[RSS] 删除失败', group);
+					api.bot.socket.send.group('[RSS] 删除失败', group);
 				}
 			}
 		},
@@ -132,12 +132,12 @@ module.exports = {
 					});
 
 					if(r.length === 0){
-						api.bot.send.group('[RSS] 这个群还没有订阅任何内容', e.group);
+						api.bot.socket.send.group('[RSS] 这个群还没有订阅任何内容', e.group);
 					}else{
-						api.bot.send.group(m.join('\n'), e.group);
+						api.bot.socket.send.group(m.join('\n'), e.group);
 					}
 				}catch (e) {
-					api.bot.send.group('[RSS] 查询失败', e.group);
+					api.bot.socket.send.group('[RSS] 查询失败', e.group);
 				}
 			}
 		},
@@ -147,12 +147,12 @@ module.exports = {
 			command: /\.rss update/,
 			func: async (e) => {
 				if(!admin.isAdmin(e.sender.user_id)){
-					api.bot.send.group('¿', e.group);
+					api.bot.socket.send.group('¿', e.group);
 					return;
 				}
 
 				await update();
-				api.bot.send.group('[RSS] 刷新成功', e.group);
+				api.bot.socket.send.group('[RSS] 刷新成功', e.group);
 			}
 		}
 	]

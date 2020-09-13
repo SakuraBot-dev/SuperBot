@@ -53,7 +53,7 @@ bot.event.on('group_msg', (e) => {
   if(e.msg.substr(0,1) === '.'){
     const cmd = e.msg.substr(1).split(' ');
     if(cmd[0] === 'status'){
-      bot.send.group([
+      bot.socket.send.group([
         `uptime: ${utils.getUptime()}`,
         `plugins: ${plugins.length}`,
         `commit: ${require('child_process').execSync('git rev-parse HEAD').toString().trim().substr(0, 7)}`,
@@ -72,12 +72,12 @@ bot.event.on('group_msg', (e) => {
         if(plugins[id]){
           if(plugins[id].status === 'running'){
             pluginMgr.unload(Number(id));
-            bot.send.group('[PM] 卸载成功', e.group);
+            bot.socket.send.group('[PM] 卸载成功', e.group);
           }else{
-            bot.send.group('[PM] 插件没有被加载', e.group);
+            bot.socket.send.group('[PM] 插件没有被加载', e.group);
           }
         }else{
-          bot.send.group('[PM] 插件未找到', e.group);
+          bot.socket.send.group('[PM] 插件未找到', e.group);
         }
       }else if(cmd[1] === 'load'){
         // 加载插件
@@ -86,9 +86,9 @@ bot.event.on('group_msg', (e) => {
         if(plugins[id]){
           if(plugins[id].status === 'unloaded'){
             pluginMgr.load(Number(id));
-            bot.send.group('[PM] 加载成功', e.group);
+            bot.socket.send.group('[PM] 加载成功', e.group);
           }else{
-            bot.send.group('[PM] 插件已经被加载了', e.group);
+            bot.socket.send.group('[PM] 插件已经被加载了', e.group);
           }
         }else{
           pluginMgr.load(id);
@@ -100,11 +100,11 @@ bot.event.on('group_msg', (e) => {
         if(plugins[id]){
           if(plugins[id].status === 'unloaded'){
             pluginMgr.load(Number(id));
-            bot.send.group('[PM] 加载成功', e.group);
+            bot.socket.send.group('[PM] 加载成功', e.group);
           }else{
             pluginMgr.unload(Number(id));
             pluginMgr.load(Number(id));
-            bot.send.group('[PM] 重载成功', e.group);
+            bot.socket.send.group('[PM] 重载成功', e.group);
           }
         }
       }else if(cmd[1] === 'info'){
@@ -121,7 +121,7 @@ bot.event.on('group_msg', (e) => {
           });
 
           if(plugin_id === -1){
-            bot.send.group('[PM] 插件未找到', e.group);
+            bot.socket.send.group('[PM] 插件未找到', e.group);
           }else{
             p = plugins[plugin_id];
           }
@@ -130,12 +130,12 @@ bot.event.on('group_msg', (e) => {
           if(plugins[id]){
             p = plugins[id];
           }else{
-            bot.send.group('[PM] 插件未找到', e.group);
+            bot.socket.send.group('[PM] 插件未找到', e.group);
           }
         }
 
         if(p){
-          bot.send.group([
+          bot.socket.send.group([
             `========PM========`,
             `名称：${p.name}`,
             `介绍：${p.desc}`,
@@ -151,7 +151,7 @@ bot.event.on('group_msg', (e) => {
         plugins.forEach((e) => {
           i.push(`${e.id}. [${(e.status === 'running' ? '运行中' : '已停止')}]${e.name}(${e.file})`);
         });
-        bot.send.group(i.join('\n'), e.group);
+        bot.socket.send.group(i.join('\n'), e.group);
       }else if(cmd[1] === 'cmd'){
         // 插件命令列表
         const id = cmd[2];
@@ -167,12 +167,12 @@ bot.event.on('group_msg', (e) => {
           r.push(`======== ${plugins[id].name} ========`);
 
           if(r.length === 0){
-            bot.send.group('[PM] 这个插件没有注册任何命令', e.group);
+            bot.socket.send.group('[PM] 这个插件没有注册任何命令', e.group);
           }else{
-            bot.send.group(r.join('\n'), e.group);
+            bot.socket.send.group(r.join('\n'), e.group);
           }
         }else{
-          bot.send.group('[PM] 插件未找到', e.group);
+          bot.socket.send.group('[PM] 插件未找到', e.group);
         }
       }
     }
