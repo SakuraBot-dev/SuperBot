@@ -226,7 +226,7 @@ module.exports = {
 
 				const r = api.data.get('vtb', `feed_${uid}`);
 				if(r){
-					const feed = r.split(',');
+					const feed = String(r).split(',');
 					const tmp = [];
 					feed.forEach(n => {
 						if(n !== String(e.group)){
