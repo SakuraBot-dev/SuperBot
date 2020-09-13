@@ -193,8 +193,10 @@ module.exports = {
 				const id = e.msg.substr(11);
 				const r = api.data.get('steam', 'feed');
 				if(r){
-					r.push(id);
-					api.data.update('steam', 'feed', r);
+					if(r.indexOf(id) === -1){
+						r.push(id);
+						api.data.update('steam', 'feed', r);
+					}
 				}else{
 					api.data.add('steam', 'feed', [id]);
 				}
