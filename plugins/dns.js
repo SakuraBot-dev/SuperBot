@@ -26,7 +26,7 @@ module.exports = {
 		{
 			id: 'nslookup',
 			helper: '.nslookup [域名] [类型] 查询域名的DNS记录',
-			command: /\.nslookup (.*) (.*)/,
+			command: /^\.nslookup (.*) (.*)$/,
 			func: async (e) => {
 				const input = e.msg.substr(10);
 				const domain = input.split(' ')[0];
@@ -36,9 +36,9 @@ module.exports = {
 					resolver.resolve(domain, type, (err, address) => {
 						if(err){
 							api.logger.error(err);
-							api.bot.send.group('查询失败', e.group);
+							api.bot.socket.send.group('查询失败', e.group);
 						}else{
-							api.bot.send.group([
+							api.bot.socket.send.group([
 								`域名：${domain}`,
 								`类型：${type}`,
 								`结果：${address.join(', ')}`
@@ -47,7 +47,7 @@ module.exports = {
 					});
 				}catch (e) {
 					api.logger.error(e);
-					api.bot.send.group('查询失败', e.group);
+					api.bot.socket.send.group('查询失败', e.group);
 				}
 			}
 		}
