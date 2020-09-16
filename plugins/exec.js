@@ -26,7 +26,7 @@ module.exports = {
                 const code = e.msg.substr(6);
 
                 if (!admin.isOwner(e.sender.user_id)) {
-                    api.bot.send.group('[exec] 你想干啥¿', e.group);
+                    api.bot.socket.send.group('[exec] 你想干啥¿', e.group);
                 } else {
                     try {
                         let result = eval(code);
@@ -35,10 +35,10 @@ module.exports = {
                             result = util.inspect(result);
                         }
 
-                        api.bot.send.group(result, e.group);
+                        api.bot.socket.send.group(result, e.group);
                     } catch (err) {
-                        api.bot.send.group('执行出错', e.group);
-                        api.bot.send.group(util.inspect(err), e.group())
+                        api.bot.socket.send.group('执行出错', e.group);
+                        api.bot.socket.send.group(util.inspect(err), e.group())
                     }
                 }
             }
@@ -51,21 +51,21 @@ module.exports = {
                 const code = e.msg.substr(6);
 
                 if (!admin.isOwner(e.sender.user_id)) {
-                    api.bot.send.group('[exec] 你想干啥¿', e.group);
+                    api.bot.socket.send.group('[exec] 你想干啥¿', e.group);
                 } else {
                     try {
                         let _p = p.exec(code);
 
                         _p.stdout.on('data', (data) => {
-                            api.bot.send.group(data.toString().trim(), e.group);
+                            api.bot.socket.send.group(data.toString().trim(), e.group);
                         });
 
                         _p.on('exit', (code, sign) => {
-                            api.bot.send.group(`进程退出, code: ${code}, sign: ${sign}`, e.group);
+                            api.bot.socket.send.group(`进程退出, code: ${code}, sign: ${sign}`, e.group);
                         });
                     } catch (err) {
-                        api.bot.send.group('执行出错', e.group);
-                        api.bot.send.group(util.inspect(err), e.group())
+                        api.bot.socket.send.group('执行出错', e.group);
+                        api.bot.socket.send.group(util.inspect(err), e.group())
                     }
                 }
             }

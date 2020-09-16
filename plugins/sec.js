@@ -148,7 +148,7 @@ module.exports = {
         command: /^\.query\ (.*)$/,
         func: async(e) => {
             const input = e.msg.substr(7);
-            api.bot.send.group('正在查询', e.group);
+            api.bot.socket.send.group('正在查询', e.group);
 
             const info = await p.getInfo(input);
             if (info[0]) {
@@ -164,7 +164,7 @@ module.exports = {
                     const sub_domain = info[1].data.sub_domain_count; // 子域名数量
                     const current_ip = info[1].data.current_ip_count; // 相关IP数量
 
-                    api.bot.send.group([
+                    api.bot.socket.send.group([
                         `域名：${input}`,
                         `标签：${tags}`,
                         `子域名数量: ${sub_domain}`,
@@ -174,7 +174,7 @@ module.exports = {
                     const s = await p.sub_domain.domain(input, token);
 
                     if (s[0]) {
-                        api.bot.send.group(s[1], e.group);
+                        api.bot.socket.send.group(s[1], e.group);
                     }
                 } else {
                     // 是IP
@@ -182,7 +182,7 @@ module.exports = {
                     const token = info[1].token; // Token
                     const current_domain = info[1].data.current_domain_count; // 相关域名数量
 
-                    api.bot.send.group([
+                    api.bot.socket.send.group([
                         `IP：${input}`,
                         `标签：${tags}`,
                         `相关域名数量: ${current_domain}`
@@ -190,18 +190,18 @@ module.exports = {
 
                     p.sub_domain.ip(input, token).then(s => {
                         if (s[0]) {
-                            api.bot.send.group(s[1], e.group);
+                            api.bot.socket.send.group(s[1], e.group);
                         }
                     })
 
                     p.port(input, token).then(port => {
                         if (port[0]) {
-                            api.bot.send.group(port[1], e.group);
+                            api.bot.socket.send.group(port[1], e.group);
                         }
                     });
                 }
             } else {
-                api.bot.send.group('查询失败', e.group);
+                api.bot.socket.send.group('查询失败', e.group);
             }
         }
     }]

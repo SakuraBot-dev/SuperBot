@@ -126,7 +126,7 @@ const steam = {
 
                             const r = api.data.get('steam', `feed_${id}`);
                             r.forEach(group => {
-                                api.bot.send.group(`${e[id].personaname} 正在游玩 ${e[id].gameextrainfo}`, group)
+                                api.bot.socket.send.group(`${e[id].personaname} 正在游玩 ${e[id].gameextrainfo}`, group)
                             })
                         }
                     } else {
@@ -178,9 +178,9 @@ module.exports = {
                 const r = (await steam.api.getGameStat([id]))[id];
 
                 if (r.gameextrainfo) {
-                    api.bot.send.group(`${r.personaname} 正在游玩 ${r.gameextrainfo}`, e.group)
+                    api.bot.socket.send.group(`${r.personaname} 正在游玩 ${r.gameextrainfo}`, e.group)
                 } else {
-                    api.bot.send.group(`${r.personaname} 没玩游戏`, e.group)
+                    api.bot.socket.send.group(`${r.personaname} 没玩游戏`, e.group)
                 }
             }
         },
@@ -209,7 +209,7 @@ module.exports = {
                     api.data.add('steam', `feed_${id}`, [e.group]);
                 }
 
-                api.bot.send.group('[Steam] 订阅成功', e.group);
+                api.bot.socket.send.group('[Steam] 订阅成功', e.group);
             }
         },
         {
@@ -227,7 +227,7 @@ module.exports = {
                 f.filter(e => e !== e.group);
                 api.data.update('steam', `feed_${id}`, f);
 
-                api.bot.send.group('[Steam] 取消成功', e.group);
+                api.bot.socket.send.group('[Steam] 取消成功', e.group);
             }
         }
     ]

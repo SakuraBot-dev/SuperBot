@@ -47,20 +47,20 @@ module.exports = {
             const ip = e.msg.substr(6);
 
             if (!admin.isAdmin(e.sender.user_id)) {
-                api.bot.send.group('¿', e.group);
+                api.bot.socket.send.group('¿', e.group);
                 return;
             }
 
             if (block(ip)) {
-                api.bot.send.group('你想干啥？', e.group);
+                api.bot.socket.send.group('你想干啥？', e.group);
                 return;
             }
 
             if (nmap) {
-                api.bot.send.group('已经有一个正在运行的扫描了', e.group);
+                api.bot.socket.send.group('已经有一个正在运行的扫描了', e.group);
             } else {
                 timer = setInterval(() => {
-                    api.bot.send.group(msgQueue.join('\n'), e.group);
+                    api.bot.socket.send.group(msgQueue.join('\n'), e.group);
                     msgQueue = [];
                 }, 5e2);
 
@@ -72,7 +72,7 @@ module.exports = {
 
                 nmap.on('exit', (code, sign) => {
                     msgQueue.push(`nmap进程退出, code: ${code}, sign: ${sign}`);
-                    api.bot.send.group(msgQueue.join('\n'), e.group);
+                    api.bot.socket.send.group(msgQueue.join('\n'), e.group);
                     clearInterval(timer);
                     nmap = null;
                 });

@@ -35,7 +35,7 @@ const update = async() => {
                 }
                 //console.log(groups.group);
                 if (index > 0) { //有更新才转发
-                    api.bot.send.group(s, _rss.group);
+                    api.bot.socket.send.group(s, _rss.group);
                     db2.read().get(`rss[feed]`).find({
                         id: _rss.id
                     }).assign({
@@ -89,7 +89,7 @@ length	可选。子串中的字符数。必须是数值。如果省略了该参�
                 const sender = e.sender.user_id;
 
                 if (!admin.isAdmin(e.sender.user_id)) {
-                    api.bot.send.group('很抱歉，你不是机器人管理员，无权限操作！', e.group);
+                    api.bot.socket.send.group('很抱歉，你不是机器人管理员，无权限操作！', e.group);
                     return;
                 }
 
@@ -110,15 +110,15 @@ length	可选。子串中的字符数。必须是数值。如果省略了该参�
                                     last_id: ""
                                 })
                                 .write();
-                            api.bot.send.group('[RSS] 订阅成功', group);
+                            api.bot.socket.send.group('[RSS] 订阅成功', group);
                         } else {
-                            api.bot.send.group('[RSS] 该rss已订阅', group);
+                            api.bot.socket.send.group('[RSS] 该rss已订阅', group);
                         }
                     }).catch(e => {
-                        api.bot.send.group('[RSS] 订阅失败：' + e, group);
+                        api.bot.socket.send.group('[RSS] 订阅失败：' + e, group);
                     });
                 } else {
-                    api.bot.send.group('[RSS] 请填写正确的链接', group);
+                    api.bot.socket.send.group('[RSS] 请填写正确的链接', group);
                 }
             }
         },
@@ -131,7 +131,7 @@ length	可选。子串中的字符数。必须是数值。如果省略了该参�
                 const group = e.group;
                 //console.log(id);
                 if (!admin.isAdmin(e.sender.user_id)) {
-                    api.bot.send.group('很抱歉，你不是机器人管理员，无权限操作！', e.group);
+                    api.bot.socket.send.group('很抱歉，你不是机器人管理员，无权限操作！', e.group);
                     return;
                 }
                 try {
@@ -146,12 +146,12 @@ length	可选。子串中的字符数。必须是数值。如果省略了该参�
                                 id: parseInt(id)
                             })
                             .write();
-                        api.bot.send.group('[RSS] 删除成功', group);
+                        api.bot.socket.send.group('[RSS] 删除成功', group);
                     } else {
-                        api.bot.send.group('[RSS] 该rss不存在，无法删除', group);
+                        api.bot.socket.send.group('[RSS] 该rss不存在，无法删除', group);
                     }
                 } catch (e) {
-                    api.bot.send.group('[RSS] 删除失败:' + e, group);
+                    api.bot.socket.send.group('[RSS] 删除失败:' + e, group);
                 }
             }
         },
@@ -181,13 +181,13 @@ length	可选。子串中的字符数。必须是数值。如果省略了该参�
                             //s2 += "status:" + data[i].status;
                             s1 += "\n";
                         }
-                        api.bot.send.group(s1, e.group);
+                        api.bot.socket.send.group(s1, e.group);
                         //console.log(s1);
                     } else {
-                        api.bot.send.group('[RSS] 这个群还没有订阅任何内容', e.group);
+                        api.bot.socket.send.group('[RSS] 这个群还没有订阅任何内容', e.group);
                     }
                 } catch (e) {
-                    api.bot.send.group('[RSS] 查询失败：' + e, e.group);
+                    api.bot.socket.send.group('[RSS] 查询失败：' + e, e.group);
                 }
             }
         },
@@ -197,11 +197,11 @@ length	可选。子串中的字符数。必须是数值。如果省略了该参�
             command: /。rss update/,
             func: async(e) => {
                 if (!admin.isAdmin(e.sender.user_id)) {
-                    api.bot.send.group('很抱歉，你不是机器人管理员，无权限操作！', e.group);
+                    api.bot.socket.send.group('很抱歉，你不是机器人管理员，无权限操作！', e.group);
                     return;
                 }
                 await update();
-                api.bot.send.group('[RSS] 刷新成功', e.group);
+                api.bot.socket.send.group('[RSS] 刷新成功', e.group);
             }
         },
         {
@@ -209,7 +209,7 @@ length	可选。子串中的字符数。必须是数值。如果省略了该参�
             helper: '。rss help	rss帮助说明',
             command: /。rss help/,
             func: async(e) => {
-                api.bot.send.group('[RSS] 指令列表：\n查询 。rss list\n增加 。rss add\n删除 。rss del\n立即刷新 。rss update', e.group);
+                api.bot.socket.send.group('[RSS] 指令列表：\n查询 。rss list\n增加 。rss add\n删除 。rss del\n立即刷新 。rss update', e.group);
             }
         }
     ]

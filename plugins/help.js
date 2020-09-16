@@ -20,7 +20,7 @@ module.exports = {
         helper: '.help(.h) 查看帮助信息',
         command: /^\.help$|^\.h$/,
         func: async(e) => {
-            api.bot.send.group([
+            api.bot.socket.send.group([
                 '.h	查看帮助信息',
                 '.status	查看统计信息',
                 '.pm load [file|id]	加载插件',
