@@ -26,7 +26,7 @@ const utils = {
         }).join('\n');
 
         api.config.vtb.groups.forEach(group => {
-            api.bot.send.group([
+            api.bot.socket.send.group([
                 `最近一小时直播弹幕TOP10：`,
                 h,
                 `===============`,
@@ -41,7 +41,7 @@ const utils = {
         api.logger.info(`正在推送 ${cache.vtb[mid].name}(${mid}) 的开播信息`);
 
         api.config.vtb.groups.forEach(group => {
-            api.bot.send.group([
+            api.bot.socket.send.group([
                 `${name} 开播了`,
                 title,
                 link,
@@ -53,7 +53,7 @@ const utils = {
 
         if (r) {
             r.split(',').forEach(group => {
-                api.bot.send.group([
+                api.bot.socket.send.group([
                     `${name} 开播了`,
                     title,
                     link,
@@ -175,7 +175,7 @@ module.exports = {
                 timeout: 5e2
             }],
             func: async(e) => {
-                api.bot.send.group([
+                api.bot.socket.send.group([
                     `数据来源：dd-center (https://vtbs.moe)`,
                     `不知道写啥了，就先这样吧（雾`
                 ].join('\n'), e.group);
@@ -205,7 +205,7 @@ module.exports = {
                     api.data.add('vtb', `feed_${uid}`, e.group);
                 }
 
-                api.bot.send.group('[vtb] 订阅成功', e.group);
+                api.bot.socket.send.group('[vtb] 订阅成功', e.group);
             }
         },
         {
@@ -235,7 +235,7 @@ module.exports = {
                     api.data.update('vtb', `feed_${uid}`, tmp.join(','))
                 }
 
-                api.bot.send.group('[vtb] 取消成功', e.group);
+                api.bot.socket.send.group('[vtb] 取消成功', e.group);
             }
         }
     ]
