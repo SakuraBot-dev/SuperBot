@@ -26,11 +26,11 @@ const update = async() => {
                 }
             }
             for (i = 0; i < index; i++) { //确认要更新多少后，开始转发
-                s += [
+                s = s + [
                     `[RSS] 您订阅的 ${rss_result.title.trim()} 更新了`,
                     `标题：${rss_result.items[i].title.trim()}`,
                     `链接：${rss_result.items[i].link}`
-                ].join('\n');
+                ].join('\n') + "\n";
             }
             //console.log(groups.group);
             if (index > 0) { //有更新才转发
@@ -158,9 +158,12 @@ length	可选。子串中的字符数。必须是数值。如果省略了该参�
             func: async(e) => {
                 try {
                     let s1 = "";
-                    let data = db2.read().get(`rss[feed]`).value();
+                    let data = db2.read().get(`rss[feed]`).filter({
+                        group: e.group
+                    }).value();
                     //console.log(data);
                     if (data.length != 0) {
+                        //console.log(data.length);
                         for (let i = 0; i < data.length; i++) {
                             //console.log(data[i].id);
                             //console.log(data[i].url);
@@ -169,7 +172,7 @@ length	可选。子串中的字符数。必须是数值。如果省略了该参�
                             //console.log(data[i].status);
                             s1 += "id: " + data[i].id + " , ";
                             s1 += "url：" + data[i].url;
-                            //s2 += "group:" + data[i].group + "\n";
+                            //s1 += "group: " + data[i].group;
                             //s2 += "user:" + data[i].user + "\n";
                             //s2 += "status:" + data[i].status;
                             s1 += "\n";
