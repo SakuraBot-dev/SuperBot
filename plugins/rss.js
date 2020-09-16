@@ -11,35 +11,39 @@ const update = async() => {
     const r = await db2.read().get(`rss[feed]`).value();
     for (const _rss of r) {
         parser.parseURL(_rss.url).then(async rss_result => {
-            const id = rss_result.items[0].link; //最新的
-            //console.log(rss_result);
-            //console.log(id)
-            //console.log(_rss.last_id)
-            let index = 0;
-            let i = 0;
-            let s = "";
-            for (i = 0; i < rss_result.items.length; i++) { //判断更新了多少条
-                if (_rss.last_id == rss_result.items[i].link) {
-                    break;
-                } else {
-                    index++;
+            try {
+                const id = rss_result.items[0].link; //最新的
+                //console.log(rss_result);
+                //console.log(id)
+                //console.log(_rss.last_id)
+                let index = 0;
+                let i = 0;
+                let s = "";
+                for (i = 0; i < rss_result.items.length; i++) { //判断更新了多少条
+                    if (_rss.last_id == rss_result.items[i].link) {
+                        break;
+                    } else {
+                        index++;
+                    }
                 }
-            }
-            for (i = 0; i < index; i++) { //确认要更新多少后，开始转发
-                s = s + [
-                    `[RSS] 您订阅的 ${rss_result.title.trim()} 更新了`,
-                    `标题：${rss_result.items[i].title.trim()}`,
-                    `链接：${rss_result.items[i].link}`
-                ].join('\n') + "\n";
-            }
-            //console.log(groups.group);
-            if (index > 0) { //有更新才转发
-                api.bot.send.group(s, _rss.group);
-                db2.read().get(`rss[feed]`).find({
-                    id: _rss.id
-                }).assign({
-                    last_id: id
-                }).write();
+                for (i = 0; i < index; i++) { //确认要更新多少后，开始转发
+                    s = s + [
+                        `[RSS] 您订阅的 ${rss_result.title.trim()} 更新了`,
+                        `标题：${rss_result.items[i].title.trim()}`,
+                        `链接：${rss_result.items[i].link}`
+                    ].join('\n') + "\n";
+                }
+                //console.log(groups.group);
+                if (index > 0) { //有更新才转发
+                    api.bot.send.group(s, _rss.group);
+                    db2.read().get(`rss[feed]`).find({
+                        id: _rss.id
+                    }).assign({
+                        last_id: id
+                    }).write();
+                }
+            } catch (e) {
+                api.logger.warn(`RSS 更新错误, url: ${_rss.url}, err: ${e}`);
             }
         }).catch(e => {
             api.logger.warn(`RSS 更新失败, url: ${_rss.url}, err: ${JSON.stringify(e)}`);
