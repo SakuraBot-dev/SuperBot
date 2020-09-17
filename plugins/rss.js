@@ -26,10 +26,10 @@ const update = async() => {
                         index++;
                     }
                 }
+                s = `[RSS] 您订阅的 ${rss_result.title.trim()} 更新了\n`;
                 for (i = 0; i < index; i++) { //确认要更新多少后，开始转发
                     s = s + [
-                        `[RSS] 您订阅的 ${rss_result.title.trim()} 更新了`,
-                        `标题：${rss_result.items[i].title.trim()}`,
+                        `标题${(i+1).toString()}：${rss_result.items[i].title.trim()}`,
                         `链接：${rss_result.items[i].link}`
                     ].join('\n') + "\n";
                 }
