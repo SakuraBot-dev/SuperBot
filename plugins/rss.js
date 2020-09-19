@@ -27,12 +27,28 @@ const update = async() => {
                     }
                 }
                 s = `[RSS] 您订阅的 ${rss_result.title.trim()} 更新了\n`;
+                let temp;
                 for (i = 0; i < index; i++) { //确认要更新多少后，开始转发
+                    //temp = /&lt;pre style=.*&gt;(.*)&lt;/.exec(rss_result.items[i].content.trim());
+                    //console.log(rss_result.items[i]);
                     s = s + [
                         `标题${(i+1).toString()}：${rss_result.items[i].title.trim()}`,
+                        `内容：${rss_result.items[i].contentSnippet.trim()}`,
                         `链接：${rss_result.items[i].link}`
                     ].join('\n') + "\n";
                 }
+                /*
+                {
+                    title: '',
+                    link: '',
+                    pubDate: '',
+                    author: '',
+                    content: '',
+                    contentSnippet: '',
+                    id: '',
+                    isoDate: ''
+                }
+                */
                 //console.log(groups.group);
                 if (index > 0) { //有更新才转发
                     api.bot.socket.send.group(s, _rss.group);
