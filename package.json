@@ -8,6 +8,7 @@
   "dependencies": {
     "ali-mysql-client": "^1.0.4",
     "child_process": "^1.0.2",
+    "gc-stats": "^1.4.0",
     "limiter": "^1.1.5",
     "log4js": "^6.3.0",
     "request": "^2.88.2",

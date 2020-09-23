@@ -2,6 +2,8 @@ const fs = require('fs');
 const bot = require('./lib/bot');
 const admin = require('./lib/admin');
 const test = require('./lib/test');
+const gcStat = require('./lib/gc');
+const { api } = require('./lib/test');
 const logger = require('./lib/logger').main;
 const EventEmitter = require('events').EventEmitter;
 const cmd_event = new EventEmitter();
@@ -62,8 +64,16 @@ bot.event.on('group_msg', (e) => {
         `heap: ${utils.humanMem(process.memoryUsage().heapUsed)}/${utils.humanMem(process.memoryUsage().heapTotal)}`,
         `allocated memory: ${utils.humanMem(process.memoryUsage().rss)}`,
         `external: ${utils.humanMem(process.memoryUsage().external)}`,
-        `GitHub: https://git.io/JUYDe`
+        `GitHub: https://git.io/JUYDe`,
+        `NumGC: ${gcStat.gcInfo.num}`,
+        `ForceGC: ${gcStat.gcInfo.force}`
       ].join('\n'), e.group);
+    }else if(cmd[0] === 'gc'){
+      if(gcStat.gc()){
+        bot.socket.send.group('succeed', e.group);
+      }else{
+        bot.socket.send.group('failed', e.group);
+      }
     }else if(cmd[0] === 'pm'){
       if(cmd[1] === 'unload'){
         // 卸载插件
