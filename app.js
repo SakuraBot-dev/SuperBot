@@ -3,7 +3,9 @@ const plugin = require('./plugin');
 
 try{
 	fs.mkdirSync('./data');
-}catch (e) {}
+} catch (e) {
+	// fail
+}
 
 // 开始加载插件
 plugin();

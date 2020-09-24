@@ -10,11 +10,11 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: (e) => {
+		onload: () => {
 			api.logger.info(`AdminManager 开始运行`);
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			api.logger.info(`AdminManager 停止运行`);
 		}
 	},

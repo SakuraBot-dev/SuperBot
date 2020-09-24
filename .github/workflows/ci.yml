@@ -29,7 +29,7 @@ jobs:
         run: npm install
       - name: create config
         run: cp ./config.example.js ./config.js
-      - name: NPM Audit
-        run: npm audit
+      - name: Lint
+        run: npm run lint
       - name: Test
         run: npm run ci

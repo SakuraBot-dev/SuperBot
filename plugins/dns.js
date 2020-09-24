@@ -13,11 +13,11 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: (e) => {
+		onload: () => {
 			api.logger.info('DNS 开始运行')
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			resolver.cancel();
 			api.logger.info('DNS 停止始运行')
 		}

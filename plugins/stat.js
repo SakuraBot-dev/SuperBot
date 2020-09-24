@@ -9,11 +9,11 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: (e) => {
+		onload: () => {
 			api.logger.info('stat 开始运行')
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			api.logger.info('stat 停止始运行')
 		}
 	},

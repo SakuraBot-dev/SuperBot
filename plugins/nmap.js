@@ -30,11 +30,11 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: (e) => {
+		onload: () => {
 			api.logger.info(`nmap 开始运行`);
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			if(nmap) nmap.kill(9);
 			api.logger.info(`nmap 停止运行`);
 		}

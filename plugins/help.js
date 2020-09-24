@@ -8,10 +8,10 @@ module.exports = {
 		author: '涂山苏苏'
 	},
 	events: {
-		onload: async (e) => {
+		onload: async () => {
 			api.logger.info('HELP 开始运行');
 		},
-		onunload: (e) => {
+		onunload: () => {
 			api.logger.info('HELP 停止运行');
 		}
 	},

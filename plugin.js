@@ -3,7 +3,6 @@ const bot = require('./lib/bot');
 const admin = require('./lib/admin');
 const test = require('./lib/test');
 const gcStat = require('./lib/gc');
-const { api } = require('./lib/test');
 const logger = require('./lib/logger').main;
 const EventEmitter = require('events').EventEmitter;
 const cmd_event = new EventEmitter();
@@ -14,7 +13,7 @@ let cmd_event_list = [];
 // 插件列表
 const plugins = [];
 
-const isCi = (process.argv.indexOf('ci') !== -1);
+const isCi = process.argv.indexOf('ci') !== -1;
 
 const utils = {
   getUptime: () => {
@@ -32,7 +31,7 @@ const utils = {
     let result = "";
     for(let i = units.length - 1; i >= 0; i--) {
       if(bytes >= 1024 ** i) {
-        result += ~~(bytes / (1024 ** i));
+        result += ~~(bytes / 1024 ** i);
         result += `${units[i]} `;
         bytes %= 1024 ** i;
       }
@@ -151,7 +150,7 @@ bot.event.on('group_msg', (e) => {
             `介绍：${p.desc}`,
             `版本：${p.version}`,
             `作者：${p.author}`,
-            `状态：${(p.status === 'running' ? '运行中' : '已停止')}`,
+            `状态：${p.status === 'running' ? '运行中' : '已停止'}`,
             `========PM========`
           ].join('\n'), e.group);
         }
@@ -159,7 +158,7 @@ bot.event.on('group_msg', (e) => {
         // 插件列表
         const i = [];
         plugins.forEach((e) => {
-          i.push(`${e.id}. [${(e.status === 'running' ? '运行中' : '已停止')}]${e.name}(${e.file})`);
+          i.push(`${e.id}. [${e.status === 'running' ? '运行中' : '已停止'}]${e.name}(${e.file})`);
         });
         bot.socket.send.group(i.join('\n'), e.group);
       }else if(cmd[1] === 'cmd'){

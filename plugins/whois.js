@@ -11,11 +11,11 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: (e) => {
+		onload: () => {
 			api.logger.info(`Whois 开始运行`);
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			api.logger.info(`Whois 停止运行`);
 		}
 	},
@@ -23,7 +23,7 @@ module.exports = {
 		{
 			id: 'ip',
 			helper: '.whois ip [IP] 查询IP的whois数据',
-			command: /\.whois\ ip\ (.*)/,
+			command: /\.whois ip (.*)/,
 			func: async (e) => {
 				const ip = e.msg.substr(10);
 				api.bot.socket.send.group('正在查询', e.group);
@@ -65,7 +65,7 @@ module.exports = {
 		{
 			id: 'domain',
 			helper: '.whois domain [域名] 查询域名的whois数据',
-			command: /\.whois\ domain\ (.*)/,
+			command: /\.whois domain (.*)/,
 			func: async (e) => {
 				const domain = e.msg.substr(14);
                 api.bot.socket.send.group('正在查询...', e.group);
@@ -107,7 +107,7 @@ module.exports = {
 		{
 			id: 'icp',
 			helper: '.icp [域名] 查询域名备案信息',
-			command: /^\.icp\ (.*)$/,
+			command: /^\.icp (.*)$/,
 			func: async (e) => {
 				const domain = e.msg.substr(4);
 
