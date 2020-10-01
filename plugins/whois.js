@@ -135,7 +135,8 @@ module.exports = {
 									`备案号: ${icpn}`,
 									`首页链接: ${index}`,
 									`网站名称: ${siteName}`,
-									`审查日期: ${time}`
+									`审查日期: ${time}`,
+									`详情链接: https://icp.chinaz.com/${domain}`
 								].join('\n'), e.group);
 							}
 						}catch (e) {
