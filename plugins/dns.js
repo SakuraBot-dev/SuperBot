@@ -45,8 +45,13 @@ module.exports = {
 								address.forEach(e => {
 									const tmp = [];
 									Object.keys(e).forEach(v => {
-										if(v === 'type') tmp.push(`类型：${e[v]}`);
-										if(v === 'value' || v === 'exchange' || v === 'address') tmp.push(`结果：${e[v]}`);
+										if(v === 'type'){
+											tmp.push(`类型：${e[v]}`);
+										}else if(v === 'value' || v === 'exchange' || v === 'address'){
+											tmp.push(`结果：${e[v]}`);
+										}else{
+											tmp.push(`${v}: ${e[v]}`);
+										}
 									});
 									result.push(tmp.join(', '));
 								});
