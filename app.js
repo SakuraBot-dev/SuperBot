@@ -3,6 +3,7 @@ const plugin = require('./plugin');
 
 try{
 	fs.mkdirSync('./data');
+	fs.mkdirSync('./logs');
 } catch (e) {
 	// fail
 }

@@ -5,8 +5,8 @@ const p = require('child_process');
 
 module.exports = {
 	plugin: {
-		name: 'HELP',
-		desc: 'HELP',
+		name: 'exec',
+		desc: '直接执行命令和代码',
 		version: '0.0.1',
 		author: '涂山苏苏'
 	},

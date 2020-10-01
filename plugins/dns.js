@@ -38,10 +38,24 @@ module.exports = {
 							api.logger.error(err);
 							api.bot.socket.send.group('查询失败', e.group);
 						}else{
+							api.logger.debug('nslookup', address);
+							let result = address.join(', ');
+							if(type === 'ANY'){
+								result = [];
+								address.forEach(e => {
+									const tmp = [];
+									Object.keys(e).forEach(v => {
+										if(v === 'type') tmp.push(`类型：${e[v]}`);
+										if(v === 'value' || v === 'exchange' || v === 'address') tmp.push(`结果：${e[v]}`);
+									});
+									result.push(tmp.join(', '));
+								});
+								result = result.join('\n');
+							}
 							api.bot.socket.send.group([
 								`域名：${domain}`,
 								`类型：${type}`,
-								`结果：${address.join(', ')}`
+								`结果：${result}`
 							].join('\n'), e.group);
 						}
 					});

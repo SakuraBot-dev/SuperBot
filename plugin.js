@@ -71,7 +71,7 @@ bot.event.on('group_msg', (e) => {
       if(gcStat.gc()){
         bot.socket.send.group('succeed', e.group);
       }else{
-        bot.socket.send.group('failed', e.group);
+        bot.socket.send.group('failed: 请尝试添加\'--expose_gc\'参数', e.group);
       }
     }else if(cmd[0] === 'pm'){
       if(cmd[1] === 'unload'){
