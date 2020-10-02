@@ -166,7 +166,7 @@ module.exports = {
 			clearInterval(steam.timer);
 			steam.timer = null;
 
-			api.logger.info('steam 停止始运行')
+			api.logger.info('steam 停止运行')
 		}
 	},
 	commands: [
