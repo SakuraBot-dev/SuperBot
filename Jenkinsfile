@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('checkout') {
       steps {
-        scmSkip(deleteBuild: true, skipPattern:'.*\\[ci skip\\].*')
+        scmSkip(deleteBuild: false, skipPattern:'.*\[ci skip\].*')
         
         checkout([$class: 'GitSCM',
         branches: [[name: '*/master']],
