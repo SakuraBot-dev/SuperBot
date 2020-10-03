@@ -1,5 +1,7 @@
 pipeline {
-  agent any
+  agent {
+    label 'Theresa node-2'
+  }
   stages {
     stage('checkout') {
       steps {
