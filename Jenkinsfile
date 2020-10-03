@@ -3,8 +3,6 @@ pipeline {
   stages {
     stage('checkout') {
       steps {
-        scmSkip(deleteBuild: false, skipPattern:'.*\[ci skip\].*')
-        
         checkout([$class: 'GitSCM',
         branches: [[name: '*/master']],
         userRemoteConfigs: [[url: 'https://github.com/TheresaQWQ/SuperBot.git']]
