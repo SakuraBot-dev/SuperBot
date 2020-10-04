@@ -17,12 +17,13 @@ module.exports = {
 	},
   commands: [],
   webhook: [{
-    id: 'test',
+    id: 'github',
     path: /^\/webhook\/github\/(.*)/,
     method: 'post',
     func: async (req) => {
 			const group = req.url.split('/').pop();
-			const event = req.headers['X-GitHub-Event'];
+			const event = req.headers['x-github-event'];
+
 			if(event === 'push'){
 				const commits = [];
 
