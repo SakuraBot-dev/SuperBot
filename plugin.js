@@ -3,6 +3,7 @@ const bot = require('./lib/bot');
 const admin = require('./lib/admin');
 const test = require('./lib/test');
 const gcStat = require('./lib/gc');
+const webhook = require('./lib/webhook');
 const logger = require('./lib/logger').main;
 const EventEmitter = require('events').EventEmitter;
 const cmd_event = new EventEmitter();
@@ -280,6 +281,14 @@ const pluginMgr = {
       pluginMgr.bind(id, plugins[id].in.events);
       pluginMgr.bind_commands(id, plugins[id].in.commands);
 
+      if(plugins[id].in.webhook){
+        Object.keys(plugins[id].in.webhook).forEach(index => {
+          const route = plugins[id].in.webhook[index];
+          logger.debug(`正在挂载 ${plugins[id].name} 的 ${route.id} webhook`);
+          webhook.addRouter(`${id}_${route.id}`, route.path, route.method, route.func);
+        })
+      }
+
       plugins[id].in.events.onload({
         id: id,
         status: 'running'
@@ -307,6 +316,14 @@ const pluginMgr = {
       pluginMgr.bind(id, plugins[id].in.events);
       pluginMgr.bind_commands(id, plugins[id].in.commands);
 
+      if(plugins[id].in.webhook){
+        Object.keys(plugins[id].in.webhook).forEach(index => {
+          const route = plugins[id].in.webhook[index];
+          logger.debug(`正在挂载 ${plugins[id].name} 的 ${route.id} webhook`);
+          webhook.addRouter(`${id}_${route.id}`, route.path, route.method, route.func);
+        })
+      }
+
       plugins[id].in.events.onload({
         id: id,
         status: 'running'
@@ -328,6 +345,14 @@ const pluginMgr = {
       id: id,
       status: 'unloaded'
     });
+
+    if(plugins[id].in.webhook){
+      Object.keys(plugins[id].in.webhook).forEach(index => {
+        const route = plugins[id].in.webhook[index];
+        logger.debug(`正在挂载 ${plugins[id].name} 的 ${route.id} webhook`);
+        webhook.removeRoute(`${id}_${route.id}`, route.path, route.method, route.func);
+      })
+    }
     
     // 删除require的缓存
     delete require.cache[require.resolve(`./plugins/${plugins[id].file}`)]
