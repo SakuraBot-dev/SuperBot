@@ -19,7 +19,7 @@ module.exports = {
   webhook: [{
     id: 'test',
     path: /^\/webhook\/github\/(.*)/,
-    method: 'get',
+    method: 'post',
     func: async (req) => {
 			const group = req.url.split('/').pop();
 			const event = req.headers['X-GitHub-Event'];
