@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node app.js",
-    "ci": "node app.js ci"
+    "ci": "node app.js ci",
+    "lint": "eslint --ext .js ."
   },
   "dependencies": {
     "ali-mysql-client": "^1.0.4",
+    "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
+    "express": "^4.17.1",
+    "gc-stats": "^1.4.0",
     "limiter": "^1.1.5",
     "log4js": "^6.3.0",
     "request": "^2.88.2",
@@ -17,6 +21,8 @@
     "ws": "^7.3.1"
   },
   "devDependencies": {
-    "@types/socket.io-client": "^1.4.33"
+    "@types/express": "^4.17.8",
+    "@types/socket.io-client": "^1.4.33",
+    "eslint": "^7.9.0"
   }
 }

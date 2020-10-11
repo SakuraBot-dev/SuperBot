@@ -1,5 +1,7 @@
 # SuperBot
 一个普通的QQ机器人
+<br>
+[![Build Status](https://ci.ishland.com:43333/job/SuperBot/badge/icon)](https://ci.ishland.com:43333/job/SuperBot/)
 
 ## 如何使用
 1. 参考注释修改配置文件，记得重命名成 `config.js`

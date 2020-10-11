@@ -11,11 +11,11 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: (e) => {
+		onload: () => {
 			api.logger.info(`Whois 开始运行`);
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			api.logger.info(`Whois 停止运行`);
 		}
 	},
@@ -23,11 +23,11 @@ module.exports = {
 		{
 			id: 'ip',
 			helper: '.whois ip [IP] 查询IP的whois数据',
-			command: /\.whois\ ip\ (.*)/,
+			command: /\.whois ip (.*)/,
 			func: async (e) => {
 				const ip = e.msg.substr(10);
 				api.bot.socket.send.group('正在查询', e.group);
-				request(`https://open.imoe.xyz/prod/whois/ip/${ip}`, {}, (err, res, body) => {
+				request(`http://ip-api.com/json/${ip}`, {}, (err, res, body) => {
 					if(res.statusCode === 200 || !err){
 						try{
 							const info = JSON.parse(body);
@@ -37,18 +37,22 @@ module.exports = {
 								const country = info.country;		// 国家
 								const region = info.region;			// 省份
 								const city = info.city;					// 城市
-								const type = info.type;					// 类型
-								const asn = info.asn;						// ASN
+								const as = info.as;							// ASN
 								const org = info.org;						// 所属组织
 								const isp = info.isp;						// 运营商
 
+								let c = country;
+								if(c === 'Taiwan' || c === 'Hongkong' || c === 'Macao'){
+									// 国内找不到好用的免费api，海外api会把这些地方写到国家上，所以单独做处理
+									c = 'China'
+								}
+
 								api.bot.socket.send.group([
 									`IP: ${ip}`,
-									`类型: ${type}`,
-									`国家: ${country}`,
+									`国家: ${c}`,
 									`省份: ${region}`,
 									`城市: ${city}`,
-									`ASN: ${asn}`,
+									`ASN: ${as}`,
 									`组织: ${org}`,
 									`运营商: ${isp}`
 								].join('\n'), e.group);
@@ -65,7 +69,7 @@ module.exports = {
 		{
 			id: 'domain',
 			helper: '.whois domain [域名] 查询域名的whois数据',
-			command: /\.whois\ domain\ (.*)/,
+			command: /\.whois domain (.*)/,
 			func: async (e) => {
 				const domain = e.msg.substr(14);
                 api.bot.socket.send.group('正在查询...', e.group);
@@ -107,7 +111,7 @@ module.exports = {
 		{
 			id: 'icp',
 			helper: '.icp [域名] 查询域名备案信息',
-			command: /^\.icp\ (.*)$/,
+			command: /^\.icp (.*)$/,
 			func: async (e) => {
 				const domain = e.msg.substr(4);
 
@@ -135,7 +139,8 @@ module.exports = {
 									`备案号: ${icpn}`,
 									`首页链接: ${index}`,
 									`网站名称: ${siteName}`,
-									`审查日期: ${time}`
+									`审查日期: ${time}`,
+									`详情链接: https://icp.chinaz.com/${domain}`
 								].join('\n'), e.group);
 							}
 						}catch (e) {

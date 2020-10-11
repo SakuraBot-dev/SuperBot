@@ -12,28 +12,28 @@ const p = {
 					'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'
 				}
 			}, (err, res, body) => {
-				if(res.statusCode === 200 || !err){
-					try{
+				if (res.statusCode === 200 || !err) {
+					try {
 						const info = JSON.parse(body);
-						if(info.response_code === 0){
+						if (info.response_code === 0) {
 							cb([true, info]);
-						}else{
+						} else {
 							cb([false, null]);
 						}
-					}catch (e) {
+					} catch (e) {
 						cb([false, null]);
 					}
-				}else{
+				} else {
 					cb([false, null]);
 				}
 			});
 		});
 	},
 	getInfo: async (input) => {
-		try{
+		try {
 			const e = await p.request(`https://x.threatbook.cn/graph/data/get/summary?q=${input}`);
 
-			if(e[0]){
+			if (e[0]) {
 				const tags = [];
 				Object.keys(e[1].data.intel_tags).forEach(i => {
 					tags.push(e[1].data.intel_tags[i].name);
@@ -44,18 +44,18 @@ const p = {
 					tags: tags,
 					data: e[1].data
 				}]
-			}else{
-				return [false, null];
 			}
-		}catch (e) {
+			
+			return [false, null];
+		} catch (e) {
 			return [false, null];
 		}
 	},
 	sub_domain: {
 		ip: async (ip, token) => {
-			try{
+			try {
 				const result = await p.request(`https://x.threatbook.cn/graph/data/second/ip/domains?q=${ip}&token=${token}`);
-				if(result[0]){
+				if (result[0]) {
 					const msg = [];
 					result[1].data.forEach(e => {
 						const tags = [];
@@ -64,22 +64,22 @@ const p = {
 							tags.push(e.intel_tags[i].name);
 						});
 
-						if(tags.length === 0) tags[0] = '暂无标签'
+						if (tags.length === 0) tags[0] = '暂无标签'
 
 						msg.push(`[${e.date}] ${e.name} (${tags.join(', ')})`);
 					});
 					return [true, msg.join('\n')];
-				}else{
-					return [false, null];
 				}
-			}catch (e) {
+
+				return [false, null];
+			} catch (e) {
 				return [false, null];
 			}
 		},
 		domain: async (domain, token) => {
-			try{
+			try {
 				const result = await p.request(`https://x.threatbook.cn/graph/data/second/sub/domains?q=${domain}&token=${token}`);
-				if(result[0]){
+				if (result[0]) {
 					const msg = [];
 					result[1].data.forEach(e => {
 						const tags = [];
@@ -88,24 +88,24 @@ const p = {
 							tags.push(e.intel_tags[i].name);
 						})
 
-						if(tags.length === 0) tags[0] = '暂无标签'
+						if (tags.length === 0) tags[0] = '暂无标签'
 
 						msg.push(`[${e.date}] ${e.name} (${tags.join(', ')})`);
 					});
 					return [true, msg.join('\n')];
-				}else{
-					return [false, null];
 				}
-			}catch (e) {
+
+				return [false, null];
+			} catch (e) {
 				return [false, null];
 			}
 		}
 	},
 	port: async (ip, token) => {
 		// IP Only
-		try{
+		try {
 			const result = await p.request(`https://x.threatbook.cn/graph/data/second/ip/ports?q=${ip}&token=${token}`);
-			if(result[0]){
+			if (result[0]) {
 				const msg = [];
 				result[1].data.forEach((e, index) => {
 					msg.push(`===== ${index + 1} =====`)
@@ -116,10 +116,10 @@ const p = {
 					msg.push(`===== ${index + 1} =====`)
 				});
 				return [true, msg.join('\n')];
-			}else{
-				return [false, null];
 			}
-		}catch (e) {
+			
+			return [false, null];
+		} catch (e) {
 			return [false, null];
 		}
 	}
@@ -134,11 +134,11 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: (e) => {
+		onload: () => {
 			api.logger.info(`sec 开始运行`);
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			api.logger.info(`sec  停止运行`);
 		}
 	},
@@ -146,19 +146,19 @@ module.exports = {
 		{
 			id: 'ip',
 			helper: '.query [IP/域名] 查询IP或域名的信息',
-			command: /^\.query\ (.*)$/,
+			command: /^\.query (.*)$/,
 			func: async (e) => {
 				const input = e.msg.substr(7);
 				api.bot.socket.send.group('正在查询', e.group);
 
 				const info = await p.getInfo(input);
-				if(info[0]){
+				if (info[0]) {
 					let isDomain = true;
-					if(!info[1].data.sub_domain_count){
+					if (!info[1].data.sub_domain_count) {
 						isDomain = false;
 					}
 
-					if(isDomain){
+					if (isDomain) {
 						// 是域名
 						const tags = info[1].tags.join(', ');								// 标签
 						const token = info[1].token;												// Token
@@ -174,10 +174,10 @@ module.exports = {
 
 						const s = await p.sub_domain.domain(input, token);
 
-						if(s[0]){
+						if (s[0]) {
 							api.bot.socket.send.group(s[1], e.group);
 						}
-					}else{
+					} else {
 						// 是IP
 						const tags = info[1].tags.join(', ');												// 标签
 						const token = info[1].token;																// Token
@@ -190,18 +190,18 @@ module.exports = {
 						].join('\n'), e.group);
 
 						p.sub_domain.ip(input, token).then(s => {
-							if(s[0]){
+							if (s[0]) {
 								api.bot.socket.send.group(s[1], e.group);
 							}
 						})
 
 						p.port(input, token).then(port => {
-							if(port[0]){
+							if (port[0]) {
 								api.bot.socket.send.group(port[1], e.group);
 							}
 						});
 					}
-				}else{
+				} else {
 					api.bot.socket.send.group('查询失败', e.group);
 				}
 			}

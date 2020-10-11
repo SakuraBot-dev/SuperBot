@@ -94,9 +94,9 @@ const steam = {
 				});
 
 				return players;
-			}else{
-				return null;
 			}
+				return null;
+			
 		}
 	},
 	bot: {
@@ -152,7 +152,7 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: async (e) => {
+		onload: async () => {
 			api.logger.info('steam 开始运行')
 
 			await steam.bot.update();
@@ -162,11 +162,11 @@ module.exports = {
 			}, 3e4)
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			clearInterval(steam.timer);
 			steam.timer = null;
 
-			api.logger.info('steam 停止始运行')
+			api.logger.info('steam 停止运行')
 		}
 	},
 	commands: [

@@ -44,14 +44,14 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: (e) => {
+		onload: () => {
 			n.timer = setInterval(async () => {
 				await update();
 			}, 3e4);
 			api.logger.info(`RSS RSS订阅器开始运行`);
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			clearInterval(n.timer);
 			api.logger.info(`RSS RSS订阅器停止运行`);
 		}
@@ -72,7 +72,7 @@ module.exports = {
 				}
 
 				if(/^(http(s)?:\/\/)\w+[^\s]+(\.[^\s]+){1,}$/g.test(link)){
-					parser.parseURL(link).then(e => {
+					parser.parseURL(link).then(() => {
 						db
 						.insert('feed')
 						.column('url', link)
@@ -81,7 +81,7 @@ module.exports = {
 						.column('status', 'enable')
 						.execute();
 						api.bot.socket.send.group('[RSS] 订阅成功', group);
-					}).catch(e => {
+					}).catch(() => {
 						api.bot.socket.send.group('[RSS] 订阅失败', group);
 					});
 				}else{

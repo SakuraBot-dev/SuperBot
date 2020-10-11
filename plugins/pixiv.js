@@ -61,11 +61,11 @@ module.exports = {
 	},
 	events: {
 		// 加载
-		onload: (e) => {
+		onload: () => {
 			api.logger.info('Pixiv 开始运行')
 		},
 		// 卸载
-		onunload: (e) => {
+		onunload: () => {
 			api.logger.info('Pixiv 停止始运行')
 		}
 	},

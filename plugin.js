@@ -2,6 +2,8 @@ const fs = require('fs');
 const bot = require('./lib/bot');
 const admin = require('./lib/admin');
 const test = require('./lib/test');
+const gcStat = require('./lib/gc');
+const webhook = require('./lib/webhook');
 const logger = require('./lib/logger').main;
 const EventEmitter = require('events').EventEmitter;
 const cmd_event = new EventEmitter();
@@ -12,7 +14,7 @@ let cmd_event_list = [];
 // 插件列表
 const plugins = [];
 
-const isCi = (process.argv.indexOf('ci') !== -1);
+const isCi = process.argv.indexOf('ci') !== -1;
 
 const utils = {
   getUptime: () => {
@@ -30,7 +32,7 @@ const utils = {
     let result = "";
     for(let i = units.length - 1; i >= 0; i--) {
       if(bytes >= 1024 ** i) {
-        result += ~~(bytes / (1024 ** i));
+        result += ~~(bytes / 1024 ** i);
         result += `${units[i]} `;
         bytes %= 1024 ** i;
       }
@@ -62,8 +64,16 @@ bot.event.on('group_msg', (e) => {
         `heap: ${utils.humanMem(process.memoryUsage().heapUsed)}/${utils.humanMem(process.memoryUsage().heapTotal)}`,
         `allocated memory: ${utils.humanMem(process.memoryUsage().rss)}`,
         `external: ${utils.humanMem(process.memoryUsage().external)}`,
-        `GitHub: https://git.io/JUYDe`
+        `GitHub: https://git.io/JUYDe`,
+        `NumGC: ${gcStat.gcInfo.num}`,
+        `ForceGC: ${gcStat.gcInfo.force}`
       ].join('\n'), e.group);
+    }else if(cmd[0] === 'gc'){
+      if(gcStat.gc()){
+        bot.socket.send.group('succeed', e.group);
+      }else{
+        bot.socket.send.group('failed: 请尝试添加\'--expose_gc\'参数', e.group);
+      }
     }else if(cmd[0] === 'pm'){
       if(cmd[1] === 'unload'){
         // 卸载插件
@@ -141,7 +151,7 @@ bot.event.on('group_msg', (e) => {
             `介绍：${p.desc}`,
             `版本：${p.version}`,
             `作者：${p.author}`,
-            `状态：${(p.status === 'running' ? '运行中' : '已停止')}`,
+            `状态：${p.status === 'running' ? '运行中' : '已停止'}`,
             `========PM========`
           ].join('\n'), e.group);
         }
@@ -149,7 +159,7 @@ bot.event.on('group_msg', (e) => {
         // 插件列表
         const i = [];
         plugins.forEach((e) => {
-          i.push(`${e.id}. [${(e.status === 'running' ? '运行中' : '已停止')}]${e.name}(${e.file})`);
+          i.push(`${e.id}. [${e.status === 'running' ? '运行中' : '已停止'}]${e.name}(${e.file})`);
         });
         bot.socket.send.group(i.join('\n'), e.group);
       }else if(cmd[1] === 'cmd'){
@@ -271,6 +281,14 @@ const pluginMgr = {
       pluginMgr.bind(id, plugins[id].in.events);
       pluginMgr.bind_commands(id, plugins[id].in.commands);
 
+      if(plugins[id].in.webhook){
+        Object.keys(plugins[id].in.webhook).forEach(index => {
+          const route = plugins[id].in.webhook[index];
+          logger.debug(`正在挂载 ${plugins[id].name} 的 ${route.id} webhook`);
+          webhook.addRouter(`${id}_${route.id}`, route.path, route.method, route.func);
+        })
+      }
+
       plugins[id].in.events.onload({
         id: id,
         status: 'running'
@@ -298,6 +316,14 @@ const pluginMgr = {
       pluginMgr.bind(id, plugins[id].in.events);
       pluginMgr.bind_commands(id, plugins[id].in.commands);
 
+      if(plugins[id].in.webhook){
+        Object.keys(plugins[id].in.webhook).forEach(index => {
+          const route = plugins[id].in.webhook[index];
+          logger.debug(`正在挂载 ${plugins[id].name} 的 ${route.id} webhook`);
+          webhook.addRouter(`${id}_${route.id}`, route.path, route.method, route.func);
+        })
+      }
+
       plugins[id].in.events.onload({
         id: id,
         status: 'running'
@@ -319,6 +345,14 @@ const pluginMgr = {
       id: id,
       status: 'unloaded'
     });
+
+    if(plugins[id].in.webhook){
+      Object.keys(plugins[id].in.webhook).forEach(index => {
+        const route = plugins[id].in.webhook[index];
+        logger.debug(`正在挂载 ${plugins[id].name} 的 ${route.id} webhook`);
+        webhook.removeRoute(`${id}_${route.id}`, route.path, route.method, route.func);
+      })
+    }
     
     // 删除require的缓存
     delete require.cache[require.resolve(`./plugins/${plugins[id].file}`)]
