@@ -119,8 +119,10 @@ const utils = {
 
 					if(!cache.vtb[e.mid].stat && e.liveStatus === 1){
 						// 新开播
-						api.logger.debug(JSON.stringify(e));
-						utils.sendLiveStat(e.mid, e.uname, e.title, e.lastLive.online, `https://live.bilibili.com/${e.roomid}`);
+						api.logger.debug(e);
+						if(e.follower >= api.config.vtb.limit){
+							utils.sendLiveStat(e.mid, e.uname, e.title, e.lastLive.online, `https://live.bilibili.com/${e.roomid}`);
+						}
 					}
 
 					cache.vtb[e.mid].stat = e.liveStatus === 1;

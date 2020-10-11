@@ -28,6 +28,7 @@ module.exports = {
 		},
 		vtb: {
 			host: 'https://api.vtbs.moe',		// socket.io的连接地址
+			limit: 1e4,		// 粉丝大于这个的vtb开播才会被推送
 			groups: []		// vtb插件消息发送群号
 		},
     steam: {
