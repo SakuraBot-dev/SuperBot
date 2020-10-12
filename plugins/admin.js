@@ -41,7 +41,7 @@ module.exports = {
 		{
 			id: 'rm',
 			helper: '.m rm [QQ号] 删除管理员',
-			command: /%\.m rm (.*)$/,
+			command: /^\.m rm (.*)$/,
 			func: async (e) => {
 				const qq = e.msg.substr(7);
 				const sender = e.sender.user_id;
