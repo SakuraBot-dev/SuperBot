@@ -61,8 +61,10 @@ module.exports = {
 					api.bot.socket.send.group('已经有一个正在运行的扫描了', e.group);
 				}else{
 					timer = setInterval(() => {
-						api.bot.socket.send.group(msgQueue.join('\n'), e.group);
-						msgQueue = [];
+						if(msgQueue.length > 0){
+							api.bot.socket.send.group(msgQueue.join('\n'), e.group);
+							msgQueue = [];
+						}
 					},5e2);
 
 					nmap = p.exec(`nmap -A -T5 -v4 ${ip}`);
