@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:v2" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9768af2a-04e0-431f-b82c-9c9151cd0cdb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/bot/Message.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/bot/bot.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/bot/event.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/bot/socket.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/logger.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/plugin/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/plugin/plugin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/plugin/timer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/debug/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/debug/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.eslintrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.example.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/admin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/api.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/bot.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/db.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/gc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/logger.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/socket.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/webhook.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/admin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/dns.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/exec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/fun.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/github.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/help.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/nmap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/pixiv.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/rss.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/sec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/stat.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/steam.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/vtb.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/whois.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="package.json" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1j1nY4kPeKTAhWeBAmR4OsWgFK6" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="14.5.0" />
+    <property name="js.last.introduce.type" value="CONST" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.1.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\QQ 机器人项目\SuperBot\lib\core\bot" />
+      <recent name="D:\Project\QQ 机器人项目\SuperBot\lib\core\plugin" />
+      <recent name="D:\Project\QQ 机器人项目\SuperBot\lib\core" />
+      <recent name="D:\Project\QQ 机器人项目\SuperBot\types\lib\core" />
+      <recent name="D:\Project\QQ 机器人项目\SuperBot\lib\plugin" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9768af2a-04e0-431f-b82c-9c9151cd0cdb" name="Default Changelist" comment="" />
+      <created>1602980509475</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1602980509475</updated>
+      <workItem from="1602980514193" duration="23617000" />
+      <workItem from="1603013920640" duration="15149000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/app.js" />
+        <option value="$PROJECT_DIR$/plugins/debug/index.js" />
+        <option value="$PROJECT_DIR$/lib/core/plugin/plugin.js" />
+        <option value="$PROJECT_DIR$/lib/core/plugin/index.js" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="v2" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="822" y="409" key="#ESLint" timestamp="1602997013923">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="822" y="409" key="#ESLint/0.0.1920.1040@0.0.1920.1040" timestamp="1602997013923" />
+    <state x="668" y="142" key="#TypeScript" timestamp="1602982003125">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="668" y="142" key="#TypeScript/0.0.1920.1040@0.0.1920.1040" timestamp="1602982003125" />
+    <state x="651" y="172" key="#app.js" timestamp="1603013951762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="651" y="172" key="#app.js/0.0.1920.1040@0.0.1920.1040" timestamp="1603013951762" />
+    <state x="542" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1603001761221">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="542" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603001761221" />
+    <state x="690" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1602994488116">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1602994488116" />
+    <state width="521" height="618" key="DebuggerActiveHint" timestamp="1602996861171">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="521" height="618" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1602996861171" />
+    <state width="1899" height="339" key="GridCell.Tab.0.bottom" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.0.center" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.0.left" timestamp="1603004415180">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415180" />
+    <state width="1899" height="339" key="GridCell.Tab.0.right" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.1.bottom" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.1.center" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.1.left" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.1.right" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.2.bottom" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.2.center" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.2.left" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state width="1899" height="339" key="GridCell.Tab.2.right" timestamp="1603004415181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="339" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603004415181" />
+    <state x="436" y="184" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1603028521863">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="436" y="184" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603028521863" />
+    <state x="663" y="236" width="594" height="626" key="find.popup" timestamp="1602990329906">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="663" y="236" width="594" height="626" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1602990329906" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1603022117528">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603022117528" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1603003815870">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603003815870" />
+  </component>
+</project>
