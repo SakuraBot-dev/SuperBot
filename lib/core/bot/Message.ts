@@ -44,8 +44,8 @@ export interface MessageNode {
 export interface Sender {
   user_id: number,
   nickname: string,
-  sex: string,
-  age: number,
+  sex?: string,
+  age?: number,
   card?: string,
   area?: string,
   level?: string,

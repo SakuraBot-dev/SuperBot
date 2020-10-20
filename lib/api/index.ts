@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import httpApi from '../core/bot/api/http';
 import {
   BotEvent
 } from '../core/bot/Message';
@@ -29,18 +30,15 @@ interface event {
 
 export const bot: BotEvent = new EventEmitter();
 export const event: event = new EventEmitter();
-
-export const api = {
-  
-}
+export const api_http = httpApi;
 
 process.on('message', (msg: ProcessMessage) => {
   switch(msg.type){
     case 'event':
-      bot.emit(msg.event_type, msg.data);
+      event.emit(msg.event_type);
       break;
     case 'bot_message':
-      bot.emit(msg.event_type, msg.data);
+      bot.emit(msg.message_type, msg.data);
       break;
   }
 })

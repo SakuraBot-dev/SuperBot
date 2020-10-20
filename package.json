@@ -9,23 +9,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TheresaQWQ/SuperBot.git"
+    "url": "git+https://github.com/SakuraBot-dev/SuperBot.git"
   },
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/TheresaQWQ/SuperBot/issues"
+    "url": "https://github.com/SakuraBot-dev/SuperBot/issues"
   },
-  "homepage": "https://github.com/TheresaQWQ/SuperBot#readme",
+  "homepage": "https://github.com/SakuraBot-dev/SuperBot#readme",
   "devDependencies": {
-    "@types/node": "^14.11.10"
-  },
-  "dependencies": {
+    "@types/got": "^9.6.11",
+    "@types/node": "^14.11.10",
     "@types/events": "^3.0.0",
     "@types/log4js": "^2.3.5",
-    "@types/websocket": "^1.0.1",
+    "@types/websocket": "^1.0.1"
+  },
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "got": "^11.7.0",
     "log4js": "^6.3.0",
-    "vm": "^0.1.0",
     "websocket": "^1.0.32"
   }
 }

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Plugin from './plugin';
 
-const plugins = [];
+const plugins: any[] = [];
 
 const init = () => {
   fs.readdirSync(path.join(__dirname, '../../../plugins')).forEach(file => {

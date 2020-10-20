@@ -57,13 +57,11 @@ export default class {
       this.in = child_process.fork(this.main, this.options);
       this.bind();
 
-      this.emit('onload', null);
+      this.in.stdout?.on('data', (chunk) => {
+        logger(this.package.packagename).info(chunk);
+      })
 
-      if(this.restart){
-        logger(`Plugin`).info('插件重启成功');
-      }
-
-      this.in.addListener('exit', (code, sign) => {
+      this.in.on('exit', (code, sign) => {
         if(code === 0){
           logger(`Plugin`).warn(`插件进程退出, code:`, code, ', sign:', sign);
         }else{
@@ -78,6 +76,14 @@ export default class {
           this.load();
         }
       })
+
+      this.emit('load', null);
+
+      if(this.restart){
+        logger(`Plugin`).info('插件重启成功');
+      }else{
+        logger(`Plugin`).info('插件启动成功');
+      }
     }else{
       logger(`Plugin`).warn('插件已经启动了');
     }
@@ -89,7 +95,7 @@ export default class {
   unload () {
     if(this.in){
       this.allow_exit = true;
-      this.emit('onunload', null);
+      this.emit('unload', null);
       setTimeout(() => {
         if(this.in) this.in.kill('SIGKILL');
       }, 5e3);
