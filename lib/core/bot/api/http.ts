@@ -101,7 +101,7 @@ export default {
        * @param user_id QQ号
        * @param times 次数
        */
-      sendLike: (user_id: number, times: number) => {
+      sendLike: (user_id: number, times: number): Promise<httpApiReturn> => {
         return request('send_like', {
           user_id: user_id,
           times: times

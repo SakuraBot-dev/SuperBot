@@ -188,20 +188,25 @@ export interface GroupRequest {
 /** Event **/
 
 export interface SocketEvent extends EventEmitter{
-  on(event: 'message', listener: (msg: object) => void): any
+  on(event: 'message', listener: (msg: Data) => void): any
   on(event: 'connect', listener: () => void): any
+  on(event: 'send', listener: (msg: string) => void): any
   
-  emit(event: 'message', msg: object): any
+  emit(event: 'message', msg: Data): any
   emit(event: 'connect'): any
+  emit(event: 'send', msg: string): any
   
-  addListener(event: 'message', listener: (msg: object) => void): any
+  addListener(event: 'message', listener: (msg: Data) => void): any
   addListener(event: 'connect', listener: () => void): any
+  addListener(event: 'send', listener: (msg: string) => void): any
   
   removeAllListeners(event: 'message'): any
   removeAllListeners(event: 'connect'): any
+  removeAllListeners(event: 'send'): any
 
-  once(event: 'message', listener: (msg: object) => void): any
+  once(event: 'message', listener: (msg: Data) => void): any
   once(event: 'connect', listener: () => void): any
+  once(event: 'send', listener: (msg: string) => void): any
 }
 
 export interface BotEvent extends EventEmitter {

@@ -3,7 +3,8 @@ import path from 'path';
 import fs from 'fs';
 import config from '../../../config';
 import logger from '../logger';
-import { bot as BotEvent, BotEventList as EventList } from '../bot/event';
+import { bot as BotEvent, BotEventList, socket as SocketEvent } from '../bot/event';
+
 
 interface Map {
   [key: string]: any;
@@ -34,16 +35,14 @@ export default class {
   constructor(dir: string, id: number) {
     this.root = path.join(__dirname, '../../../plugins/', dir);
     this.id = id;
-    this.package = JSON.parse(fs.readFileSync(path.join(this.root, 'package.json')).toString());
-    this.main = path.join(this.root, this.package.main);
-    this.options = this.package.options;
-    this.config = config.plugins[this.package.packagename];
     this.allow_exit = false;
     this.restart = false;
     this.groupStat = {};
-
-    if(!this.options.env) this.options.env = {};
-    this.options.env = Object.assign({}, this.options.env, { config: this.config });
+    
+    this.package = JSON.parse(fs.readFileSync(path.join(this.root, 'package.json')).toString());
+    this.main = path.join(this.root, this.package.main);
+    this.options = this.package.options;
+    this.config = config.plugins[this.package.packagename] || {};
 
     this.load();
   }
@@ -53,12 +52,29 @@ export default class {
    */
   load () {
     if(!this.in){
+      this.package = JSON.parse(fs.readFileSync(path.join(this.root, 'package.json')).toString());
+      this.main = path.join(this.root, this.package.main);
+      this.options = this.package.options;
+      this.config = config.plugins[this.package.packagename] || {};
       this.allow_exit = false;
+
+      if(!this.options.env) this.options.env = {};
+      const p = {
+        root: this.root,
+        data: path.join(__dirname, '../../../data/', this.package.packagename),
+        appRoot: path.join(__dirname, '../../../'),
+        id: this.id,
+        restart: this.restart
+      }
+      this.options.env = Object.assign(this.options.env, { config: JSON.stringify(this.config), process: JSON.stringify(p) });
+
+      logger(this.package.packagename).debug(this.options);
+
       this.in = child_process.fork(this.main, this.options);
       this.bind();
-
-      this.in.stdout?.on('data', (chunk) => {
-        logger(this.package.packagename).info(chunk);
+      
+      this.in.on('message', (msg) => {
+        this.onmessage(msg);
       })
 
       this.in.on('exit', (code, sign) => {
@@ -118,21 +134,43 @@ export default class {
    */
   bind () {
     if(this.in){
-      EventList.forEach((e:any) => {
+      BotEventList.forEach((e:any) => {
+        logger(this.package.packagename).debug('正在绑定', e, '事件...');
         if(e === 'group_message'){
           BotEvent.on(e, (data) => {
+            logger(this.package.packagename).debug(e, data);
             if(this.groupStat[data.group_id] === undefined) this.groupStat[data.group_id] = true;
-
             if(!this.groupStat[data.group_id]) return;
 
             this.botEvent(e, data);
           })
         }else{
           BotEvent.on(e, (data) => {
+            logger(this.package.packagename).debug(e, data);
             this.botEvent(e, data);
           })
         }
+        logger(this.package.packagename).debug(e, '绑定完成');
       })
+    }
+  }
+
+  onmessage (msg: any) {
+    if(!msg.type) return;
+    switch(msg.type) {
+      case 'socket':
+        SocketEvent.emit('send', msg.data);
+        break;
+      case 'log':
+        try {
+          const log_type: ('debug'|'info'|'warn'|'error'|'fatal') = msg.log_type.toLowerCase();
+          logger(this.package.packagename)[log_type](msg.message)
+        } catch (error) {
+          logger(this.package.packagename).warn('日志输出失败');
+        }
+        break;
+      default:
+        logger(this.package.packagename).warn(`未知的消息类型: ${msg.type}`);
     }
   }
 
