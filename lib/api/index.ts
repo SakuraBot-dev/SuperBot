@@ -6,7 +6,8 @@ import {
 } from '../core/bot/Message';
 
 interface ProcessMessage {
-  type: 'event' | 'bot_message',
+  type: 'event' | 'bot_message' | 'plugin',
+  sub_type?: string,
   event_type?: any,
   message_type?: any,
   data: any
@@ -16,7 +17,7 @@ interface App {
   root: string,
   data: string,
   appRoot: string,
-  id: number,
+  packagename: string,
   restart: boolean
 }
 
@@ -37,6 +38,11 @@ interface Command {
   owner_require: boolean
 }
 
+interface CommandList {
+  group: Array<string>,
+  private: Array<string>
+}
+
 interface event {
   on(event: 'load', listener: () => void): any
   on(event: 'unload', listener: () => void): any
@@ -53,6 +59,11 @@ interface event {
   once(event: 'load', listener: () => void): any
   once(event: 'unload', listener: () => void): any
 }
+
+const cmd: CommandList = {
+  group: [],
+  private: [],
+};
 
 export const bot: BotEvent = new EventEmitter();
 export const event: event = new EventEmitter();
@@ -300,6 +311,8 @@ export const commander = {
   reg: (command: Command, func: Function) => {
     if(command.group){
       // 群聊
+      cmd.group.push(command.helper);
+      
       bot.on('group_message', (e) => {
         const msg = e.raw_message;
         const sender = e.sender.user_id;
@@ -332,6 +345,8 @@ export const commander = {
 
     if(command.private){
       // 私聊
+      cmd.private.push(command.helper);
+      
       bot.on('private_message', (e) => {
         const sender = e.sender.user_id;
         const msg = e.raw_message;
@@ -375,10 +390,29 @@ export const config = JSON.parse(process.env.config);
 ///@ts-ignore
 export const app:App = JSON.parse(process.env.process);
 
+commander.reg({
+  cmd: new RegExp(`^.help ${app.packagename.replace('.', '\\.')}`),
+  helper: `.help ${app.packagename}   查看帮助信息`,
+  private: true,
+  group: true,
+  globalAdmin_require: false,
+  groupAdmin_require: false,
+  owner_require: false
+}, (m: Array<string>, e: any, reply: Function) => {
+  if(e.group_id){
+    // 群聊
+    reply(cmd.group.join('\n'), true);
+  }else{
+    // 私聊
+    reply(cmd.private.join('\n'), true);
+  }
+})
+
 const send = (msg: any, handle?: any) => {
   if(process.send) return process.send(msg, handle);
 }
 
+// 机器人socket
 const sendSocket = (action: string, params: any) => {
   return send({
     type: 'socket',
@@ -389,6 +423,7 @@ const sendSocket = (action: string, params: any) => {
   })
 }
 
+// 日志
 const sendLog = (type: ('debug'|'info'|'warn'|'error'|'fatal'), msg: string) => {
   return send({
     type: 'log',
@@ -400,9 +435,11 @@ const sendLog = (type: ('debug'|'info'|'warn'|'error'|'fatal'), msg: string) => 
 process.on('message', (msg: ProcessMessage) => {
   switch(msg.type){
     case 'event':
+      // 插件事件
       event.emit(msg.event_type);
       break;
     case 'bot_message':
+      // 机器人消息
       bot.emit(msg.message_type, msg.data);
       break;
   }
