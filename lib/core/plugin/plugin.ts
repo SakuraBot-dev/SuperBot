@@ -54,6 +54,7 @@ export default class {
       this.options = this.package.options || {};
       this.config = config.plugins[this.package.packagename] || {};
       this.allow_exit = false;
+      this.groupStat = {};
 
       if(!this.options.env) this.options.env = {};
       const p = {
@@ -127,6 +128,15 @@ export default class {
    */
   setGroup (group: number, stat: boolean) {
     this.groupStat[group] = stat;
+    if(this.in){
+      this.in.send({
+        type: 'group_update',
+        data: {
+          group: group,
+          stats: stat
+        }
+      })
+    }
   }
 
   /**

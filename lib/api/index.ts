@@ -4,9 +4,10 @@ import admin from '../admin';
 import {
   BotEvent
 } from '../core/bot/Message';
+import { httpApiReturn_sendMessage } from '../core/bot/api/types';
 
 interface ProcessMessage {
-  type: 'event' | 'bot_message' | 'plugin',
+  type: 'event' | 'bot_message' | 'group_update',
   sub_type?: string,
   event_type?: any,
   message_type?: any,
@@ -65,6 +66,10 @@ const cmd: CommandList = {
   private: [],
 };
 
+const group_stat: {
+  [index: string]: boolean
+} = {};
+
 export const bot: BotEvent = new EventEmitter();
 export const event: event = new EventEmitter();
 
@@ -79,6 +84,8 @@ export const api = {
        * @param auto_escape 是否作为纯文本发送
        */
       sendGroupMessage: (group_id: number, message: string, auto_escape?: boolean) => {
+        if(group_stat[group_id] === undefined) group_stat[group_id] = true;
+        if(!group_stat[group_id]) return;
         sendSocket('send_group_msg', {
           group_id: group_id,
           message: message,
@@ -302,6 +309,13 @@ export const api = {
   }
 };
 
+api.http.OneBot.message.sendGroupMsg = (group_id: number, message: string, auto_escape?: boolean): Promise<httpApiReturn_sendMessage> => {
+  if(group_stat[group_id] === undefined) group_stat[group_id] = true;
+  /// @ts-ignore
+  if(group_stat[group_id]) return;
+  return api.http.OneBot.message.sendGroupMsg(group_id, message, auto_escape);
+}
+
 export const commander = {
   /**
    * @description 注册命令
@@ -441,6 +455,9 @@ process.on('message', (msg: ProcessMessage) => {
     case 'bot_message':
       // 机器人消息
       bot.emit(msg.message_type, msg.data);
+      break;
+    case 'group_update':
+      group_stat[msg.data.group] = msg.data.stats;
       break;
   }
 })
