@@ -64,6 +64,11 @@ export default class {
         restart: this.restart,
         packagename: this.package.packagename
       }
+
+      // 创建数据文件夹
+      try{
+        fs.mkdirSync(p.data);
+      }catch(e) {}
       
       this.options.env = Object.assign(this.options.env, { config: JSON.stringify(this.config), process: JSON.stringify(p) });
 

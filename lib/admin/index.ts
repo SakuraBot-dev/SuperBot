@@ -2,6 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import config from '../../config';
 
+try{
+  fs.mkdirSync(path.join(__dirname, `../../data/admin`))
+  fs.mkdirSync(path.join(__dirname, `../../data/admin/group`))
+}catch(e) {}
+
 export default {
   /**
    * @description 是否为群组内管理员
@@ -49,7 +54,7 @@ export default {
       
       if(fs.existsSync(dir)) adminList = JSON.parse(fs.readFileSync(dir).toString());
       
-      [...adminList].push(user_id);
+      adminList.push(user_id);
       fs.writeFileSync(dir, JSON.stringify(adminList));
       return true;
     }catch(e){
@@ -68,7 +73,7 @@ export default {
       
       if(fs.existsSync(dir)) adminList = JSON.parse(fs.readFileSync(dir).toString());
       
-      [...adminList].filter(e => {
+      adminList.filter((e: number) => {
         if(e !== user_id) return e;
       });
       
@@ -111,7 +116,7 @@ export default {
       
       if(fs.existsSync(dir)) adminList = JSON.parse(fs.readFileSync(dir).toString());
       
-      [...adminList].filter(e => {
+      adminList.filter((e: number) => {
         if(e !== user_id) return e;
       });
       

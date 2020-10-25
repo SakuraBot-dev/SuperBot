@@ -309,13 +309,6 @@ export const api = {
   }
 };
 
-api.http.OneBot.message.sendGroupMsg = (group_id: number, message: string, auto_escape?: boolean): Promise<httpApiReturn_sendMessage> => {
-  if(group_stat[group_id] === undefined) group_stat[group_id] = true;
-  /// @ts-ignore
-  if(group_stat[group_id]) return;
-  return api.http.OneBot.message.sendGroupMsg(group_id, message, auto_escape);
-}
-
 export const commander = {
   /**
    * @description 注册命令
@@ -337,19 +330,21 @@ export const commander = {
           const m = command.cmd.exec(msg);
           
           const reply = (msg: string, auto_escape: boolean) => {
-            api.http.OneBot.message.sendGroupMsg(group, msg, auto_escape);
+            api.socket.message.sendGroupMessage(group, msg, auto_escape);
           }
 
           if(!command.owner_require && !command.globalAdmin_require && !command.groupAdmin_require){
             // 不需要任何权限
+            logger.info(`${sender} 在群聊(${group})中触发了 ${app.packagename} 的 ${command.cmd} 命令 (${msg})`)
             func(m, e, reply);
           }else{
             let allow = false;
             if(command.owner_require && admin.isOwner(sender)) allow = true;
-            if(command.globalAdmin_require && admin.isGlobalAdmin(sender)) allow = true;
-            if(command.groupAdmin_require && admin.isGroupAdmin(sender, group)) allow = true;
+            if(command.globalAdmin_require && (admin.isGlobalAdmin(sender) || admin.isOwner(sender))) allow = true;
+            if(command.groupAdmin_require && (admin.isGroupAdmin(sender, group) || admin.isGlobalAdmin(sender) || admin.isOwner(sender))) allow = true;
 
             if(allow){
+              logger.info(`${sender} 在群聊(${group})中触发了 ${app.packagename} 的 ${command.cmd} 命令 (${msg})`)
               func(m, e, reply);
             }
           }
@@ -370,18 +365,20 @@ export const commander = {
           const m = command.cmd.exec(msg);
           
           const reply = (msg: string, auto_escape?: boolean) => {
-            api.http.OneBot.message.sendPrivateMsg(sender, msg, auto_escape);
+            api.socket.message.sendPrivateMsg(sender, msg, auto_escape);
           }
 
           if(!command.owner_require && !command.globalAdmin_require){
             // 不需要任何权限
+            logger.info(`${sender} 在私聊中触发了 ${app.packagename} 的 ${command.cmd} 命令 (${msg})`)
             func(m, e, reply);
           }else{
             let allow = false;
             if(command.owner_require && admin.isOwner(sender)) allow = true;
-            if(command.globalAdmin_require && admin.isGlobalAdmin(sender)) allow = true;
+            if(command.globalAdmin_require && (admin.isGlobalAdmin(sender) || admin.isOwner(sender))) allow = true;
 
             if(allow){
+              logger.info(`${sender} 在私聊中触发了 ${app.packagename} 的 ${command.cmd} 命令 (${msg})`)
               func(m, e, reply);
             }
           }
@@ -404,6 +401,7 @@ export const config = JSON.parse(process.env.config);
 ///@ts-ignore
 export const app:App = JSON.parse(process.env.process);
 
+// 注册help命令
 commander.reg({
   cmd: new RegExp(`^.help ${app.packagename.replace('.', '\\.')}`),
   helper: `.help ${app.packagename}   查看帮助信息`,

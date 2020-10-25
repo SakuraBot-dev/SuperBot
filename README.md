@@ -1,4 +1,6 @@
 # SuperBot v2
 一个普通的QQ机器人
 <br>
-当前版本正在开发，文档也会有的
+文档正在完善中
+<br>
+[文档](https://github.com/SakuraBot-dev/SuperBot/wiki)

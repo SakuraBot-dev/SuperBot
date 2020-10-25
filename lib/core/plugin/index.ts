@@ -92,16 +92,20 @@ Bot.on('group_message', (msg) => {
 
         if(cmd[2] === 'add') {
           admin.addGlobalAdmin(Number(cmd[3]));
+          api.OneBot.message.sendGroupMsg(group, '[ADMIN] 操作成功');
         }else if(cmd[3] === 'del') {
           admin.delGlobalAdmin(Number(cmd[3]));
+          api.OneBot.message.sendGroupMsg(group, '[ADMIN] 操作成功');
         }
       }else if(cmd[1] === 'group'){
         if(!admin.isOwner(user) && !admin.isGlobalAdmin(user)) return;
         
         if(cmd[2] === 'add') {
           admin.addGroupAdmin(Number(cmd[3]), group);
+          api.OneBot.message.sendGroupMsg(group, '[ADMIN] 操作成功');
         }else if(cmd[3] === 'del') {
           admin.delGroupAdmin(Number(cmd[3]), group);
+          api.OneBot.message.sendGroupMsg(group, '[ADMIN] 操作成功');
         }
       }
     }
