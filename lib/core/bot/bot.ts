@@ -34,7 +34,8 @@ const message = (data: Message) => {
         raw_message: data.raw_message,
         message: data.message,
         font: data.font,
-        self_id: data.self_id
+        self_id: data.self_id,
+        message_id: data.message_id,
       };
 
       bot.emit('group_message', groupMsg)
@@ -46,7 +47,8 @@ const message = (data: Message) => {
         raw_message: data.raw_message,
         message: data.message,
         font: data.font,
-        self_id: data.self_id
+        self_id: data.self_id,
+        message_id: data.message_id
       };
 
       bot.emit('private_message', privateMsg)

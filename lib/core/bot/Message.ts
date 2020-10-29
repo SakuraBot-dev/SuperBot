@@ -61,7 +61,8 @@ export interface Anonymous{
 
 export interface GroupMessage{
   raw_message: string,
-  message: (string | MessageNode[])
+  message: (string | MessageNode[]),
+  message_id: number,
   group_id: number,
   sender: Sender,
   anonymous: (null | Anonymous),
@@ -71,7 +72,8 @@ export interface GroupMessage{
 
 export interface PrivateMessage {
   raw_message: string,
-  message: (string | MessageNode[])
+  message: (string | MessageNode[]),
+  message_id: number,
   sender: Sender,
   font: number,
   self_id: number
