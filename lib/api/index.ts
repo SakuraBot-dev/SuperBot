@@ -325,6 +325,7 @@ export const commander = {
         const sender = e.sender.user_id;
         const group = e.group_id;
 
+        command.cmd.lastIndex = 0;
         if(command.cmd.test(msg)){
           command.cmd.lastIndex = 0;
           const m = command.cmd.exec(msg);
@@ -360,6 +361,7 @@ export const commander = {
         const sender = e.sender.user_id;
         const msg = e.raw_message;
 
+        command.cmd.lastIndex = 0;
         if(command.cmd.test(msg)){
           command.cmd.lastIndex = 0;
           const m = command.cmd.exec(msg);
