@@ -26,53 +26,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9768af2a-04e0-431f-b82c-9c9151cd0cdb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/bot/Message.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/bot/bot.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/bot/event.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/bot/socket.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/logger.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/plugin/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/plugin/plugin.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/plugin/timer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/debug/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/debug/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.example.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/admin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/bot.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/db.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/gc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/logger.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/socket.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/webhook.js" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/admin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/dns.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/exec.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/fun.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/github.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/help.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/nmap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/pixiv.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/rss.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/sec.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/stat.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/steam.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/vtb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/whois.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,9 +38,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="package.json" />
         <option value="TypeScript File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -163,19 +119,14 @@
       <updated>1602980509475</updated>
       <workItem from="1602980514193" duration="23617000" />
       <workItem from="1603013920640" duration="15149000" />
+      <workItem from="1605341413939" duration="512000" />
+      <workItem from="1605341945160" duration="328000" />
+      <workItem from="1605342351383" duration="794000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
-    <option name="exactExcludedFiles">
-      <list>
-        <option value="$PROJECT_DIR$/app.js" />
-        <option value="$PROJECT_DIR$/plugins/debug/index.js" />
-        <option value="$PROJECT_DIR$/lib/core/plugin/plugin.js" />
-        <option value="$PROJECT_DIR$/lib/core/plugin/index.js" />
-      </list>
-    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

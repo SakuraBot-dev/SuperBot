@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "build": "tsc --build",
-    "start": "node ./dist/app.js && node cp"
+    "start": "ts-node ./app.ts"
   },
   "repository": {
     "type": "git",
