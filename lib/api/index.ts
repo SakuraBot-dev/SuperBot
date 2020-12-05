@@ -5,8 +5,6 @@ import admin from '../admin';
 import {
   BotEvent
 } from '../core/bot/Message';
-import { httpApiReturn_sendMessage } from '../core/bot/api/types';
-import { promises } from 'fs';
 
 interface ProcessMessage {
   type: 'event' | 'bot_message' | 'group_update' | 'echo',
