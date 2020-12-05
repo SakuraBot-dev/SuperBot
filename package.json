@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/SakuraBot-dev/SuperBot#readme",
   "devDependencies": {
+    "@types/uuid": "^8.3.0",
     "@types/events": "^3.0.0",
     "@types/got": "^9.6.11",
     "@types/log4js": "^2.3.5",
@@ -28,6 +29,7 @@
     "child_process": "^1.0.2",
     "got": "^11.7.0",
     "log4js": "^6.3.0",
+    "uuid": "^8.3.1",
     "websocket": "^1.0.32"
   }
 }

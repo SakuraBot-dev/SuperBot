@@ -1,5 +1,5 @@
 import logger from '../logger';
-import { socket, bot } from './event';
+import { socket, bot, echo } from './event';
 import {
   FriendAdd,
   FriendRecall,
@@ -196,25 +196,31 @@ const request = (data: Request) => {
 export default () => {
   socket.on('message', (msg: any) => {
     logger('Websocket Receive').debug(msg);
-    if(!msg.post_type) return;
-    switch (msg.post_type) {
-      case 'message':
-        // 消息
-        message(msg);
-        break;
-      case 'notice':
-        // 通知
-        notice(msg);
-        break;
-      case 'request':
-        // 请求消息
-        request(msg);
-        break;
-      case 'meta_event':
-        // 元事件
-        break;
-      default:
-        logger('Websocket Receive').warn(`未知的通知类型: ${msg.post_type}`)
+    if(msg.post_type) {
+      switch (msg.post_type) {
+        case 'message':
+          // 消息
+          message(msg);
+          break;
+        case 'notice':
+          // 通知
+          notice(msg);
+          break;
+        case 'request':
+          // 请求消息
+          request(msg);
+          break;
+        case 'meta_event':
+          // 元事件
+          break;
+        default:
+          logger('Websocket Receive').warn(`未知的通知类型: ${msg.post_type}`)
+      }
+    } else if (msg.echo) {
+      echo.emit('echo', {
+        uuid: msg.echo,
+        data: msg.data
+      });
     }
   });
 }

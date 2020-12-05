@@ -30,7 +30,9 @@ Bot.on('group_message', (msg) => {
     const group = msg.group_id;
 
     if(cmd[0] === 'pm'){
+      // 插件管理
       if(cmd[1] === 'list') {
+        // 插件列表
         const t: Array<string> = [];
         Object.keys(plugins).forEach((e, i) => {
           t.push(`${i}. [${plugins[e].in ? '运行中' : '已停止'}]${plugins[e].package.name} (${plugins[e].package.packagename})`);
@@ -87,23 +89,30 @@ Bot.on('group_message', (msg) => {
         }
       }
     }else if(cmd[0] === 'admin'){
+      // 管理员管理
       if(cmd[1] === 'global'){
+        // 全局管理员
         if(!admin.isOwner(user)) return;
 
         if(cmd[2] === 'add') {
+          // 添加
           admin.addGlobalAdmin(Number(cmd[3]));
           api.OneBot.message.sendGroupMsg(group, '[ADMIN] 操作成功');
         }else if(cmd[3] === 'del') {
+          // 删除
           admin.delGlobalAdmin(Number(cmd[3]));
           api.OneBot.message.sendGroupMsg(group, '[ADMIN] 操作成功');
         }
       }else if(cmd[1] === 'group'){
+        // 群管理员
         if(!admin.isOwner(user) && !admin.isGlobalAdmin(user)) return;
         
         if(cmd[2] === 'add') {
+          // 添加
           admin.addGroupAdmin(Number(cmd[3]), group);
           api.OneBot.message.sendGroupMsg(group, '[ADMIN] 操作成功');
         }else if(cmd[3] === 'del') {
+          // 删除
           admin.delGroupAdmin(Number(cmd[3]), group);
           api.OneBot.message.sendGroupMsg(group, '[ADMIN] 操作成功');
         }

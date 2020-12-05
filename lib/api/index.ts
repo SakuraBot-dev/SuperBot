@@ -1,16 +1,19 @@
 import { EventEmitter } from 'events';
 import httpApi from '../core/bot/api/http';
+import { v4 as getUUID} from 'uuid';
 import admin from '../admin';
 import {
   BotEvent
 } from '../core/bot/Message';
 import { httpApiReturn_sendMessage } from '../core/bot/api/types';
+import { promises } from 'fs';
 
 interface ProcessMessage {
-  type: 'event' | 'bot_message' | 'group_update',
-  sub_type?: string,
-  event_type?: any,
-  message_type?: any,
+  type: 'event' | 'bot_message' | 'group_update' | 'echo',
+  uuid: string,
+  sub_type: string,
+  event_type: any,
+  message_type: any,
   data: any
 }
 
@@ -72,6 +75,7 @@ const group_stat: {
 
 export const bot: BotEvent = new EventEmitter();
 export const event: event = new EventEmitter();
+export const echo: EventEmitter = new EventEmitter();
 
 export const api = {
   http: httpApi,
@@ -84,12 +88,21 @@ export const api = {
        * @param auto_escape 是否作为纯文本发送
        */
       sendGroupMessage: (group_id: number, message: string, auto_escape?: boolean) => {
-        if(group_stat[group_id] === undefined) group_stat[group_id] = true;
-        if(!group_stat[group_id]) return;
-        sendSocket('send_group_msg', {
-          group_id: group_id,
-          message: message,
-          auto_escape: auto_escape
+        return new Promise(r => {
+          if(group_stat[group_id] === undefined) group_stat[group_id] = true;
+          if(!group_stat[group_id]) return;
+
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('send_group_msg', {
+            group_id: group_id,
+            message: message,
+            auto_escape: auto_escape
+          }, uuid)
         })
       },
       /**
@@ -99,10 +112,18 @@ export const api = {
        * @param auto_escape 是否作为纯文本发送
        */
       sendPrivateMsg: (user_id: number, message: string, auto_escape?: boolean) => {
-        sendSocket('send_private_msg', {
-          user_id: user_id,
-          message: message,
-          auto_escape: auto_escape
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+          
+          sendSocket('send_private_msg', {
+            user_id: user_id,
+            message: message,
+            auto_escape: auto_escape
+          }, uuid)
         })
       },
       /**
@@ -110,8 +131,16 @@ export const api = {
        * @param message_id 消息id
        */
       delete_msg: (message_id: number) => {
-        send('delete_msg', {
-          message_id: message_id
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+          
+          sendSocket('delete_msg', {
+            message_id: message_id
+          }, uuid)
         })
       }
     },
@@ -122,9 +151,17 @@ export const api = {
        * @param times 次数
        */
       sendLike: (user_id: number, times: number) => {
-        sendSocket('send_like', {
-          user_id: user_id,
-          times: times
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+          
+          sendSocket('send_like', {
+            user_id: user_id,
+            times: times
+          }, uuid)
         })
       }
     },
@@ -136,10 +173,18 @@ export const api = {
        * @param reject_add_request 拒绝再次加入
        */
       kick: (group_id: number, user_id: number, reject_add_request?: boolean) => {
-        sendSocket('set_group_kick', {
-          group_id: group_id,
-          user_id: user_id,
-          reject_add_request: reject_add_request,
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+          
+          sendSocket('set_group_kick', {
+            group_id: group_id,
+            user_id: user_id,
+            reject_add_request: reject_add_request,
+          }, uuid)
         })
       },
       /**
@@ -149,10 +194,18 @@ export const api = {
        * @param duration 时长（0为取消禁言）
        */
       mute: (group_id: number, user_id: number, duration?: number) => {
-        sendSocket('set_group_ban', {
-          group_id: group_id,
-          user_id: user_id,
-          duration: duration,
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+        
+          sendSocket('set_group_ban', {
+            group_id: group_id,
+            user_id: user_id,
+            duration: duration,
+          }, uuid)
         })
       },
       /**
@@ -162,10 +215,18 @@ export const api = {
        * @param duration 时长（0为取消禁言）
        */
       anonymousMute: (group_id: number, flag: string, duration?: number) => {
-        sendSocket('set_group_anonymous_ban', {
-          group_id: group_id,
-          flag: flag,
-          duration: duration,
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_group_anonymous_ban', {
+            group_id: group_id,
+            flag: flag,
+            duration: duration,
+          }, uuid)
         })
       },
       /**
@@ -174,9 +235,17 @@ export const api = {
        * @param enable 是否禁言
        */
       wholeMute: (group_id: number, enable?: boolean) => {
-        sendSocket('set_group_whole_ban', {
-          group_id: group_id,
-          enable: enable,
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_group_whole_ban', {
+            group_id: group_id,
+            enable: enable,
+          }, uuid)
         })
       },
       /**
@@ -186,10 +255,18 @@ export const api = {
        * @param enable true 为设置，false 为取消
        */
       setAdmin: (group_id: number, user_id: number, enable?: boolean) => {
-        sendSocket('set_group_admin', {
-          group_id: group_id,
-          user_id: user_id,
-          enable: enable,
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_group_admin', {
+            group_id: group_id,
+            user_id: user_id,
+            enable: enable,
+          }, uuid)
         })
       },
       /**
@@ -198,9 +275,17 @@ export const api = {
        * @param enable 是否允许匿名聊天
        */
       setAnonymous: (group_id: number, enable?: boolean) => {
-        sendSocket('set_group_anonymous', {
-          group_id: group_id,
-          enable: enable,
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_group_anonymous', {
+            group_id: group_id,
+            enable: enable,
+          }, uuid)
         })
       },
       /**
@@ -210,10 +295,18 @@ export const api = {
        * @param card 群名片
        */
       setCard: (group_id: number, user_id: number, card?: string) => {
-        sendSocket('set_group_card', {
-          group_id: group_id,
-          user_id: user_id,
-          card: card
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_group_card', {
+            group_id: group_id,
+            user_id: user_id,
+            card: card
+          }, uuid)
         })
       },
       /**
@@ -222,9 +315,17 @@ export const api = {
        * @param name 群名
        */
       setName: (group_id: number, name: string) => {
-        sendSocket('set_group_name', {
-          group_id: group_id,
-          group_name: name
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_group_name', {
+            group_id: group_id,
+            group_name: name
+          }, uuid)
         })
       },
       /**
@@ -233,9 +334,17 @@ export const api = {
        * @param is_dismiss 是否解散
        */
       leave: (group_id: number, is_dismiss?: boolean) => {
-        sendSocket('set_group_leave', {
-          group_id: group_id,
-          is_dismiss: is_dismiss
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_group_leave', {
+            group_id: group_id,
+            is_dismiss: is_dismiss
+          }, uuid)
         })
       },
       /**
@@ -246,11 +355,19 @@ export const api = {
        * @param duration 有效期
        */
       setSpecialTitle: (group_id: number, user_id: number, title?: string, duration?: number) => {
-        sendSocket('set_group_special_title', {
-          group_id: group_id,
-          user_id: user_id,
-          special_title: title,
-          duration: duration
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_group_special_title', {
+            group_id: group_id,
+            user_id: user_id,
+            special_title: title,
+            duration: duration
+          }, uuid)
         })
       }
     },
@@ -262,10 +379,18 @@ export const api = {
        * @param remark 备注名
        */
       friend: (flag: string, approve: boolean, remark?: string) => {
-        sendSocket('set_friend_add_request', {
-          flag: flag,
-          approve: approve,
-          remark: remark,
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_friend_add_request', {
+            flag: flag,
+            approve: approve,
+            remark: remark,
+          }, uuid)
         })
       },
       /**
@@ -276,11 +401,19 @@ export const api = {
        * @param reason 拒绝原因
        */
       group: (flag: string, type: string, approve: boolean, reason?: string) => {
-        sendSocket('set_group_add_request', {
-          flag: flag,
-          approve: approve,
-          type: type,
-          reason: reason
+        return new Promise(r => {
+          const uuid = getUUID();
+
+          echo.once(uuid, data => {
+            r(data);
+          })
+
+          sendSocket('set_group_add_request', {
+            flag: flag,
+            approve: approve,
+            type: type,
+            reason: reason
+          }, uuid)
         })
       }
     },
@@ -289,13 +422,29 @@ export const api = {
        * @description 重启OneBot
        */
       restart: () => {
-        sendSocket('set_restart', {})
+        return new Promise(r => {
+          const uuid = getUUID();
+  
+          echo.once(uuid, data => {
+            r(data);
+          })
+  
+          sendSocket('set_restart', {}, uuid)
+        })
       },
       /**
        * @description 清理缓存
        */
       cleanCache: () => {
-        sendSocket('clean_cache', {})
+        return new Promise(r => {
+          const uuid = getUUID();
+  
+          echo.once(uuid, data => {
+            r(data);
+          })
+  
+          sendSocket('clean_cache', {}, uuid)
+        })
       }
     },
     /**
@@ -304,7 +453,15 @@ export const api = {
      * @param params 参数
      */
     raw: (action: string, params: any) => {
-      sendSocket(action, params);
+      return new Promise(r => {
+        const uuid = getUUID();
+  
+        echo.once(uuid, data => {
+          r(data);
+        })
+  
+        sendSocket(action, params, uuid);
+      })
     }
   }
 };
@@ -427,12 +584,13 @@ const send = (msg: any, handle?: any) => {
 }
 
 // 机器人socket
-const sendSocket = (action: string, params: any) => {
+const sendSocket = (action: string, params: any, echo?: string) => {
   return send({
     type: 'socket',
     data: JSON.stringify({
       action: action,
-      params: params
+      params: params,
+      echo: echo
     })
   })
 }
@@ -458,6 +616,11 @@ process.on('message', (msg: ProcessMessage) => {
       break;
     case 'group_update':
       group_stat[msg.data.group] = msg.data.stats;
+      break;
+    case 'echo':
+      const uuid: string = msg.uuid;
+      const data: string = msg.data;
+      echo.emit(uuid, data);
       break;
   }
 })

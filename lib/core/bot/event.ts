@@ -6,9 +6,11 @@ import {
 
 export const socket: SocketEvent = new EventEmitter();
 export const bot: BotEvent = new EventEmitter();
+export const echo: EventEmitter = new EventEmitter();
 
 socket.setMaxListeners(Number.MAX_SAFE_INTEGER);
 bot.setMaxListeners(Number.MAX_SAFE_INTEGER);
+echo.setMaxListeners(Number.MAX_SAFE_INTEGER);
 
 export const BotEventList = [
   'group_message',

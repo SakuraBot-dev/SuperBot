@@ -1,10 +1,9 @@
 import child_process from 'child_process';
-import { EventEmitter } from 'events';
 import path from 'path';
 import fs from 'fs';
 import config from '../../../config';
 import logger from '../logger';
-import { bot as BotEvent, BotEventList, socket as SocketEvent } from '../bot/event';
+import { bot as BotEvent, BotEventList, socket as SocketEvent, echo as EchoEvent } from '../bot/event';
 
 interface Map {
   [key: string]: any;
@@ -162,6 +161,10 @@ export default class {
           BotEvent.on(e, (data) => {
             this.botEvent(e, data);
           })
+
+          EchoEvent.on('echo', ({uuid, data}) => {
+            this.echoEvent(uuid, data);
+          })
         }
         logger(this.package.packagename).debug(e, '绑定完成');
       })
@@ -198,6 +201,22 @@ export default class {
       this.in.send({
         type: 'bot_message',
         message_type: type,
+        data: data
+      })
+    }catch(e) {}
+  }
+
+  /**
+   * @name echo事件
+   * @param uuid uuid
+   * @param data 返回内容
+   */
+  private echoEvent (uuid: string, data: any) {
+    try{
+      if(!this.in) return;
+      this.in.send({
+        type: 'echo',
+        uuid: uuid,
         data: data
       })
     }catch(e) {}
