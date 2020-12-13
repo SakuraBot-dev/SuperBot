@@ -126,6 +126,20 @@ export default class {
   }
 
   /**
+   * @name 在指定群中禁用插件
+   * */
+  disable (group: number) {
+    this.emit('disable', group);
+  }
+
+  /**
+   * @name 在指定群中启用插件
+   * */
+  enable (group: number) {
+    this.emit('enable', group);
+  }
+
+  /**
    * @name 设置群状态
    * @param group 群号
    * @param stat 状态

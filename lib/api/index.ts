@@ -48,18 +48,28 @@ interface CommandList {
 interface event {
   on(event: 'load', listener: () => void): any
   on(event: 'unload', listener: () => void): any
-  
+  on(event: 'enable', listener: (group: number) => void): any
+  on(event: 'disable', listener: (group: number) => void): any
+
   emit(event: 'load'): any
   emit(event: 'unload'): any
-  
+  emit(event: 'enable', group: number): any
+  emit(event: 'disable', group: number): any
+
   addListener(event: 'load', listener: () => void): any
   addListener(event: 'unload', listener: () => void): any
+  addListener(event: 'enable', listener: (group: number) => void): any
+  addListener(event: 'disable', listener: (group: number) => void): any
   
   removeAllListeners(event: 'load'): any
   removeAllListeners(event: 'unload'): any
+  removeAllListeners(event: 'enable'): any
+  removeAllListeners(event: 'disable'): any
 
   once(event: 'load', listener: () => void): any
   once(event: 'unload', listener: () => void): any
+  once(event: 'enable', listener: (group: number) => void): any
+  once(event: 'disable', listener: (group: number) => void): any
 }
 
 const cmd: CommandList = {
@@ -606,7 +616,7 @@ process.on('message', (msg: ProcessMessage) => {
   switch(msg.type){
     case 'event':
       // 插件事件
-      event.emit(msg.event_type);
+      event.emit(msg.event_type, msg.data);
       break;
     case 'bot_message':
       // 机器人消息

@@ -45,7 +45,8 @@ Bot.on('group_message', (msg) => {
 
         if(plugins[cmd[2]]){
           plugins[cmd[2]].setGroup(group, true);
-          api.OneBot.message.sendGroupMsg(group, '[PM] 插件启用成功');
+          plugins[cmd[2]].enable(group);
+          api.OneBot.message.sendGroupMsg(group, '[PM] 插件启用成功')
         }else{
           api.OneBot.message.sendGroupMsg(group, '[PM] 插件未找到');
         }
@@ -55,6 +56,7 @@ Bot.on('group_message', (msg) => {
 
         if(plugins[cmd[2]]){
           plugins[cmd[2]].setGroup(group, false);
+          plugins[cmd[2]].disable(group);
           api.OneBot.message.sendGroupMsg(group, '[PM] 插件禁用成功');
         }else{
           api.OneBot.message.sendGroupMsg(group, '[PM] 插件未找到');
