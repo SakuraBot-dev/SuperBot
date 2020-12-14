@@ -117,15 +117,14 @@ export default class {
       if(this.in){
         this.allow_exit = true;
         this.emit('unload', null);
-        this.in.once('exit', () => {
-          r(true);
-        })
+        this.in.once('exit', () => { r('卸载成功'); })
         setTimeout(() => {
           if(this.in) this.in.kill('SIGKILL');
           this.in = undefined;
-          r(true);
+          r('卸载成功');
         }, 5e3);
       }else{
+        r('插件没有运行')
         logger(this.package.packagename).warn('插件没有运行');
       }
     })
