@@ -1,7 +1,7 @@
 import log4js from 'log4js';
 import config from "../../config";
 
-const log = {
+log4js.configure({
   appenders: {
     file: {
       type: 'dateFile',
@@ -19,8 +19,6 @@ const log = {
       level: config.logger.level
     }
   }
-};
-
-log4js.configure(log);
+});
 
 export default log4js.getLogger;

@@ -18,17 +18,23 @@
   },
   "homepage": "https://github.com/SakuraBot-dev/SuperBot#readme",
   "devDependencies": {
-    "@types/uuid": "^8.3.0",
+    "@types/cookie-parser": "^1.4.2",
     "@types/events": "^3.0.0",
+    "@types/express": "^4.17.9",
     "@types/got": "^9.6.11",
     "@types/log4js": "^2.3.5",
     "@types/node": "^14.11.10",
+    "@types/uuid": "^8.3.0",
     "@types/websocket": "^1.0.1"
   },
   "dependencies": {
+    "@types/md5": "^2.2.1",
     "child_process": "^1.0.2",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
     "got": "^11.7.0",
     "log4js": "^6.3.0",
+    "md5": "^2.3.0",
     "uuid": "^8.3.1",
     "websocket": "^1.0.32"
   }

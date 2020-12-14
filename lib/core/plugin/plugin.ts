@@ -113,16 +113,22 @@ export default class {
    * @name 卸载插件
    */
   unload () {
-    if(this.in){
-      this.allow_exit = true;
-      this.emit('unload', null);
-      setTimeout(() => {
-        if(this.in) this.in.kill('SIGKILL');
-        this.in = undefined;
-      }, 5e3);
-    }else{
-      logger(this.package.packagename).warn('插件没有运行');
-    }
+    return new Promise(r => {
+      if(this.in){
+        this.allow_exit = true;
+        this.emit('unload', null);
+        this.in.once('exit', () => {
+          r(true);
+        })
+        setTimeout(() => {
+          if(this.in) this.in.kill('SIGKILL');
+          this.in = undefined;
+          r(true);
+        }, 5e3);
+      }else{
+        logger(this.package.packagename).warn('插件没有运行');
+      }
+    })
   }
 
   /**

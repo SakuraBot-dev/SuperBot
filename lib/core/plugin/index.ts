@@ -6,7 +6,7 @@ import { bot as Bot } from '../bot/event';
 import api from '../bot/api/http';
 import admin from '../../admin';
 
-const plugins: {
+export const plugins: {
   [index: string]: Plugin
 } = {};
 
