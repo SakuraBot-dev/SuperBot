@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperBot - 登录</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css">
+</head>
+<body>
+  <style>
+    .body {
+      margin: 10% 20%;
+    }
+  </style>
+  
+  <div class="mdui-appbar">
+    <div class="mdui-toolbar mdui-color-teal">
+      <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+      <a href="javascript:;" class="mdui-typo-headline">SuperBot Console</a>
+      <a href="javascript:;" class="mdui-typo-title">登录</a>
+    </div>
+  </div>
+
+  <div class="body mdui-typo">
+    <h1 class="mdui-text-center">
+      登录
+      <br>
+      <small>SuperBot Console</small>
+    </h1>
+    <div class="mdui-textfield mdui-textfield-floating-label">
+      <label class="mdui-textfield-label">密码</label>
+      <input class="mdui-textfield-input" type="password" id="password"/>
+    </div>
+    <button style="margin-top: 20px;" id="btn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-pink-accent mdui-center">登录</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"></script>
+
+  <script>
+    document.getElementById('btn').onclick = () => {
+      const password = document.getElementById('password').value;
+      fetch(`/api/v1/login?password=${password}`).then(async e => {
+        if(e.status === 200){
+          mdui.alert('登录成功');
+          location.href = './panel';
+        } else {
+          mdui.alert((await e.json()).msg)
+        }
+      })
+    }
+  </script>
+</body>
+</html>

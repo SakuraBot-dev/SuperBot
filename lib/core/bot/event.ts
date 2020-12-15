@@ -1,15 +1,18 @@
 import { EventEmitter } from "events";
 import {
   SocketEvent,
-  BotEvent
+  BotEvent,
+  MetaEvent
 } from './Message';
 
 export const socket: SocketEvent = new EventEmitter();
 export const bot: BotEvent = new EventEmitter();
+export const meta: MetaEvent = new EventEmitter();
 export const echo: EventEmitter = new EventEmitter();
 
 socket.setMaxListeners(Number.MAX_SAFE_INTEGER);
 bot.setMaxListeners(Number.MAX_SAFE_INTEGER);
+meta.setMaxListeners(Number.MAX_SAFE_INTEGER);
 echo.setMaxListeners(Number.MAX_SAFE_INTEGER);
 
 export const BotEventList = [

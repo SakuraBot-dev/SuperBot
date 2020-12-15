@@ -162,6 +162,15 @@ export interface GroupHonor {
   type: string
 }
 
+/** Meta消息 **/
+
+export interface heartbeat {
+  self_id: number,
+  status: any,
+  time: number,
+  interval: number
+}
+
 /** 请求消息 **/
 
 export interface Request extends Data{
@@ -187,6 +196,17 @@ export interface GroupRequest {
   flag: string,
 }
 
+export interface Meta {
+  _post_method?: number,
+  interval?: number,
+  status?: any
+  meta_event_type: string,
+  post_type: string,
+  self_id: number,
+  sub_type: string,
+  time: number
+}
+
 /** Event **/
 
 export interface SocketEvent extends EventEmitter{
@@ -209,6 +229,23 @@ export interface SocketEvent extends EventEmitter{
   once(event: 'message', listener: (msg: Data) => void): any
   once(event: 'connect', listener: () => void): any
   once(event: 'send', listener: (msg: string) => void): any
+}
+
+export interface MetaEvent extends EventEmitter{
+  on(event: 'connect', listener: () => void): any
+  on(event: 'heartbeat', listener: (msg: heartbeat) => void): any
+  
+  emit(event: 'connect'): any
+  emit(event: 'heartbeat', msg: heartbeat): any
+  
+  addListener(event: 'connect', listener: () => void): any
+  addListener(event: 'heartbeat', listener: (msg: heartbeat) => void): any
+  
+  removeAllListeners(event: 'connect'): any
+  removeAllListeners(event: 'heartbeat'): any
+
+  once(event: 'connect', listener: () => void): any
+  once(event: 'heartbeat', listener: (msg: heartbeat) => void): any
 }
 
 export interface BotEvent extends EventEmitter {

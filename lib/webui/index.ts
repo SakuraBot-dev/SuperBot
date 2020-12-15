@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import md5 from 'md5';
 import config from '../../config';
 import logger from '../core/logger';
+import path from 'path';
 
 import mod from './module';
 
@@ -14,10 +15,10 @@ app.use(async (req, res, next) => {
 });
 
 app.use(cookieParser())
-app.use(express.static('./static'));
+app.use(express.static(path.join(__dirname, 'static')));
 
 app.use((req, res, next) => {
-  if(req.url.substr(0, 12) === '/api/v1/auth') return next();
+  if(req.url.substr(0, 13) === '/api/v1/login') return next();
 
   if(req.cookies && md5(config.webui.password) === req.cookies['password']) return next();
 
@@ -28,7 +29,7 @@ app.use((req, res, next) => {
 })
 
 // 登录
-app.get('/api/v1/auth', (req, res) => {
+app.get('/api/v1/login', (req, res) => {
   const password = req.query.password;
   if(password === config.webui.password) {
     res.cookie('password', md5(password));
@@ -94,9 +95,11 @@ app.get('/api/v1/plugin/unload', async (req, res) => {
   })
 })
 
-app.use((req, res) => {
-  res.status(404).json({
-    code: 404,
-    msg: '404 Not Found'
+// 机器人状态
+app.get('/api/v1/bot/stats', async (req, res) => {
+  res.json({
+    code: 200,
+    msg: 'success',
+    result: mod.stats.stats
   })
 })

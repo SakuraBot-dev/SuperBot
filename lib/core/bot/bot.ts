@@ -1,5 +1,5 @@
 import logger from '../logger';
-import { socket, bot, echo } from './event';
+import { socket, bot, echo, meta } from './event';
 import {
   FriendAdd,
   FriendRecall,
@@ -17,7 +17,8 @@ import {
   LuckyKing,
   Notice,
   PrivateMessage,
-  Request
+  Request,
+  Meta
 } from './Message';
 
 /**
@@ -193,6 +194,28 @@ const request = (data: Request) => {
   }
 }
 
+/**
+ * @description 元事件
+ */
+const meta_event = (data: Meta) => {
+  switch(data.meta_event_type) {
+    case 'lifecycle':
+      if(data.sub_type === 'connect') {
+        logger('MAIN').info('连接成功');
+        meta.emit('connect');
+      }
+      break;
+    case 'heartbeat':
+      meta.emit('heartbeat', {
+        self_id: data.self_id,
+        status: data.status,
+        time: data.time,
+        interval: Number(data.interval)
+      })
+      break;
+  }
+}
+
 export default () => {
   socket.on('message', (msg: any) => {
     logger('Websocket Receive').debug(msg);
@@ -212,6 +235,7 @@ export default () => {
           break;
         case 'meta_event':
           // 元事件
+          meta_event(msg);
           break;
         default:
           logger('Websocket Receive').warn(`未知的通知类型: ${msg.post_type}`)
