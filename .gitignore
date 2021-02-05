@@ -1,6 +1,11 @@
 package-lock.json
-node_modules
-dist
+
+.vscode/
+.idea/
+
 config.ts
-plugins
-logs
+
+node_modules/
+dist/
+plugins/
+logs/

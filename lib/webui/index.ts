@@ -1,9 +1,6 @@
 import express from 'express';
-import cookieParser from 'cookie-parser';
-import md5 from 'md5';
 import config from '../../config';
 import logger from '../core/logger';
-import path from 'path';
 
 import mod from './module';
 
@@ -14,36 +11,14 @@ app.use(async (req, res, next) => {
   next();
 });
 
-app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'static')));
-
 app.use((req, res, next) => {
-  if(req.url.substr(0, 13) === '/api/v1/login') return next();
-
-  if(req.cookies && md5(config.webui.password) === req.cookies['password']) return next();
-
-  res.status(401).json({
-    code: 401,
-    message: '请先登录'
-  });
+  if(req.query.access_token === config.webui.access_token) return next();
+  res.status(403).send({
+    code: 403,
+    msg: 'Denied',
+    result: null
+  })
 })
-
-// 登录
-app.get('/api/v1/login', (req, res) => {
-  const password = req.query.password;
-  if(password === config.webui.password) {
-    res.cookie('password', md5(password));
-    res.json({
-      code: 200,
-      msg: '登录成功'
-    });
-  } else {
-    res.status(403).json({
-      code: 403,
-      msg: '密码错误'
-    });
-  }
-});
 
 // 日志列表
 app.get('/api/v1/log/list', (req, res) => {

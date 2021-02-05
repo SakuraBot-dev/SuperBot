@@ -10,7 +10,11 @@ import { app as webui } from './lib/webui';
 
 logger('MAIN').info('正在启动...');
 
-if(config.webui.enable) webui.listen(config.webui.port, config.webui.hostname, () => { logger('WebUI').info(`Started at ${config.webui.hostname}:${config.webui.port}`) });
+if(config.webui.enable){
+  webui.listen(config.webui.port, config.webui.hostname, () => {
+    logger('WebUI').info(`Started at http://${config.webui.hostname}:${config.webui.port}`)
+  });
+}
 
 try{
   fs.mkdirSync(path.join(__dirname, './data'));
