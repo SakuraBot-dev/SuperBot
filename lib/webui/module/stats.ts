@@ -1,4 +1,3 @@
-import { stat } from 'fs';
 import { meta } from '../../core/bot/event';
 
 export const stats = {
