@@ -1,29 +1,24 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from 'events'
 
 export interface Data {
   time: number,
+  // eslint-disable-next-line camelcase
   self_id: number,
+  // eslint-disable-next-line camelcase
   post_type: string
 }
 
 /** 聊天消息 **/
 
-export interface Message extends Data{
-  message_type: ('private' | 'group'),
-  sub_type: string,
-  message_id: number,
-  user_id: number,
-  message: (string | MessageNode[]),
-  raw_message: string,
-  font: number,
-  sender: Sender,
-  group_id: number,
-  anonymous: (null | Anonymous)
+export interface Anonymous{
+  id: number,
+  name: string,
+  flag: string
 }
 
 export interface MessageNode {
   type: string,
-  data: ( null | {
+  data: (null | {
     text?: string,
     id?: (string | number),
     file?: string,
@@ -34,6 +29,7 @@ export interface MessageNode {
     lat?: number,
     lon?: number,
     audio?: string,
+    // eslint-disable-next-line camelcase
     user_id?: number,
     nickname?: string,
     content?: (string | MessageNode),
@@ -42,6 +38,7 @@ export interface MessageNode {
 }
 
 export interface Sender {
+  // eslint-disable-next-line camelcase
   user_id: number,
   nickname: string,
   sex?: string,
@@ -53,46 +50,53 @@ export interface Sender {
   title?: string
 }
 
-export interface Anonymous{
-  id: number,
-  name: string,
-  flag: string
+export interface Message extends Data{
+  // eslint-disable-next-line camelcase
+  message_type: ('private' | 'group'),
+  // eslint-disable-next-line camelcase
+  sub_type: string,
+  // eslint-disable-next-line camelcase
+  message_id: number,
+  // eslint-disable-next-line camelcase
+  user_id: number,
+  message: (string | MessageNode[]),
+  // eslint-disable-next-line camelcase
+  raw_message: string,
+  font: number,
+  sender: Sender,
+  // eslint-disable-next-line camelcase
+  group_id: number,
+  anonymous: (null | Anonymous)
 }
 
 export interface GroupMessage{
+  // eslint-disable-next-line camelcase
   raw_message: string,
   message: (string | MessageNode[]),
+  // eslint-disable-next-line camelcase
   message_id: number,
+  // eslint-disable-next-line camelcase
   group_id: number,
   sender: Sender,
   anonymous: (null | Anonymous),
   font: number,
+  // eslint-disable-next-line camelcase
   self_id: number
 }
 
 export interface PrivateMessage {
+  // eslint-disable-next-line camelcase
   raw_message: string,
   message: (string | MessageNode[]),
+  // eslint-disable-next-line camelcase
   message_id: number,
   sender: Sender,
   font: number,
+  // eslint-disable-next-line camelcase
   self_id: number
 }
 
 /** 通知消息 **/
-
-export interface Notice extends Data {
-  notice_type: string,
-  group_id: number,
-  user_id: number,
-  file: NoticeFile,
-  sub_type: string,
-  operator_id: number,
-  duration: number,
-  message_id: number,
-  target_id: number,
-  honor_type: ('talkative'|'performer'|'emotion')
-}
 
 export interface NoticeFile {
   id: string,
@@ -101,27 +105,56 @@ export interface NoticeFile {
   busid: number
 }
 
-export interface GroupFileUpload {
+export interface Notice extends Data {
+  // eslint-disable-next-line camelcase
+  notice_type: string,
+  // eslint-disable-next-line camelcase
   group_id: number,
+  // eslint-disable-next-line camelcase
+  user_id: number,
+  file: NoticeFile,
+  // eslint-disable-next-line camelcase
+  sub_type: string,
+  // eslint-disable-next-line camelcase
+  operator_id: number,
+  duration: number,
+  // eslint-disable-next-line camelcase
+  message_id: number,
+  // eslint-disable-next-line camelcase
+  target_id: number,
+  // eslint-disable-next-line camelcase
+  honor_type: ('talkative'|'performer'|'emotion')
+}
+
+export interface GroupFileUpload {
+  // eslint-disable-next-line camelcase
+  group_id: number,
+  // eslint-disable-next-line camelcase
   user_id: number,
   file: NoticeFile
 }
 
 export interface GroupAdminChange {
+  // eslint-disable-next-line camelcase
   group_id: number,
+  // eslint-disable-next-line camelcase
   user_id: number,
   type: string
 }
 
 export interface GroupMemberChange {
+  // eslint-disable-next-line camelcase
   group_id: number,
+  // eslint-disable-next-line camelcase
   user_id: number,
   type: string,
   operator: number
 }
 
 export interface GroupMute {
+  // eslint-disable-next-line camelcase
   group_id: number,
+  // eslint-disable-next-line camelcase
   user_id: number,
   type: string,
   operator: number,
@@ -129,35 +162,49 @@ export interface GroupMute {
 }
 
 export interface FriendAdd {
+  // eslint-disable-next-line camelcase
   user_id: number
 }
 
 export interface GroupRecall {
+  // eslint-disable-next-line camelcase
   group_id: number,
+  // eslint-disable-next-line camelcase
   user_id: number,
   operator: number,
+  // eslint-disable-next-line camelcase
   message_id: number
 }
 
 export interface FriendRecall {
+  // eslint-disable-next-line camelcase
   user_id: number,
+  // eslint-disable-next-line camelcase
   message_id: number
 }
 
 export interface GroupPoke {
+  // eslint-disable-next-line camelcase
   group_id: number,
+  // eslint-disable-next-line camelcase
   user_id: number,
+  // eslint-disable-next-line camelcase
   target_id: number
 }
 
 export interface LuckyKing {
+  // eslint-disable-next-line camelcase
   group_id: number,
+  // eslint-disable-next-line camelcase
   user_id: number,
+  // eslint-disable-next-line camelcase
   target_id: number
 }
 
 export interface GroupHonor {
+  // eslint-disable-next-line camelcase
   group_id: number,
+  // eslint-disable-next-line camelcase
   user_id: number,
   type: string
 }
@@ -165,6 +212,7 @@ export interface GroupHonor {
 /** Meta消息 **/
 
 export interface heartbeat {
+  // eslint-disable-next-line camelcase
   self_id: number,
   status: any,
   time: number,
@@ -174,22 +222,29 @@ export interface heartbeat {
 /** 请求消息 **/
 
 export interface Request extends Data{
+  // eslint-disable-next-line camelcase
   request_type: string,
+  // eslint-disable-next-line camelcase
   user_id: number,
+  // eslint-disable-next-line camelcase
   group_id: number,
   comment: string,
+  // eslint-disable-next-line camelcase
   sub_type: string,
   flag: string,
 }
 
 export interface FriendRequest {
+  // eslint-disable-next-line camelcase
   user_id: number,
   comment: string,
   flag: string,
 }
 
 export interface GroupRequest {
+  // eslint-disable-next-line camelcase
   user_id: number,
+  // eslint-disable-next-line camelcase
   group_id: number,
   comment: string,
   type: string,
@@ -197,58 +252,29 @@ export interface GroupRequest {
 }
 
 export interface Meta {
+  // eslint-disable-next-line camelcase
   _post_method?: number,
   interval?: number,
   status?: any
+  // eslint-disable-next-line camelcase
   meta_event_type: string,
+  // eslint-disable-next-line camelcase
   post_type: string,
+  // eslint-disable-next-line camelcase
   self_id: number,
+  // eslint-disable-next-line camelcase
   sub_type: string,
   time: number
 }
 
 /** Event **/
 
-export interface SocketEvent extends EventEmitter{
-  on(event: 'message', listener: (msg: Data) => void): any
-  on(event: 'connect', listener: () => void): any
-  on(event: 'send', listener: (msg: string) => void): any
-  
-  emit(event: 'message', msg: Data): any
-  emit(event: 'connect'): any
-  emit(event: 'send', msg: string): any
-  
-  addListener(event: 'message', listener: (msg: Data) => void): any
-  addListener(event: 'connect', listener: () => void): any
-  addListener(event: 'send', listener: (msg: string) => void): any
-  
-  removeAllListeners(event: 'message'): any
-  removeAllListeners(event: 'connect'): any
-  removeAllListeners(event: 'send'): any
-
-  once(event: 'message', listener: (msg: Data) => void): any
-  once(event: 'connect', listener: () => void): any
-  once(event: 'send', listener: (msg: string) => void): any
-}
-
-export interface MetaEvent extends EventEmitter{
-  on(event: 'connect', listener: () => void): any
-  on(event: 'heartbeat', listener: (msg: heartbeat) => void): any
-  
-  emit(event: 'connect'): any
-  emit(event: 'heartbeat', msg: heartbeat): any
-  
-  addListener(event: 'connect', listener: () => void): any
-  addListener(event: 'heartbeat', listener: (msg: heartbeat) => void): any
-  
-  removeAllListeners(event: 'connect'): any
-  removeAllListeners(event: 'heartbeat'): any
-
-  once(event: 'connect', listener: () => void): any
-  once(event: 'heartbeat', listener: (msg: heartbeat) => void): any
-}
-
 export interface BotEvent extends EventEmitter {
+  emit(event: 'open'): any
+  emit(event: 'close'): any
+  emit(event: 'reopen'): any
+  emit(event: 'connect'): any
+  emit(event: 'error', msg: any): any
   emit(event: 'group_message', msg: GroupMessage): any
   emit(event: 'private_message', msg: PrivateMessage): any
   emit(event: 'group_file_upload', msg: GroupFileUpload): any

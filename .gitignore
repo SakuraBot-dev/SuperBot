@@ -3,7 +3,7 @@ package-lock.json
 .vscode/
 .idea/
 
-config.ts
+config.json
 
 node_modules/
 dist/

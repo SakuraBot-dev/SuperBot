@@ -1,41 +1,27 @@
 {
   "name": "super-bot",
-  "version": "2.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "build": "tsc --build",
-    "start": "ts-node ./app.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SakuraBot-dev/SuperBot.git"
-  },
-  "author": "",
+  "version": "3.0.0",
+  "author": "TheresaQWQ",
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/SakuraBot-dev/SuperBot/issues"
-  },
-  "homepage": "https://github.com/SakuraBot-dev/SuperBot#readme",
-  "devDependencies": {
-    "@types/cookie-parser": "^1.4.2",
-    "@types/events": "^3.0.0",
-    "@types/express": "^4.17.9",
-    "@types/got": "^9.6.11",
-    "@types/log4js": "^2.3.5",
-    "@types/node": "^14.11.10",
-    "@types/uuid": "^8.3.0",
-    "@types/websocket": "^1.0.1"
-  },
   "dependencies": {
-    "@types/md5": "^2.2.1",
-    "child_process": "^1.0.2",
-    "cookie-parser": "^1.4.5",
-    "express": "^4.17.1",
-    "got": "^11.7.0",
+    "@types/node": "^14.14.37",
     "log4js": "^6.3.0",
-    "md5": "^2.3.0",
-    "uuid": "^8.3.1",
-    "websocket": "^1.0.32"
+    "node-telegram-bot-api": "^0.52.0",
+    "typescript": "^4.2.3",
+    "ws": "^7.4.4"
+  },
+  "scripts": {
+    "start": "node ./dist/app.js",
+    "dev": "ts-node ./app.ts",
+    "lint": "eslint --ext .ts ."
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "@typescript-eslint/parser": "^4.20.0",
+    "eslint": "^7.23.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1"
   }
 }
