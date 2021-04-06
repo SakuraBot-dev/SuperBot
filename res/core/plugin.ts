@@ -13,6 +13,10 @@ const getPluginCtx = (packagename: string, data: string) => {
 }
 
 export default async () => {
+  try {
+    fs.mkdirSync(join(__dirname, '../../data'))
+  } catch (error) { }
+
   logger('Plugin').info('开始加载插件')
   const root = join(__dirname, '../../plugins')
   const files = fs.readdirSync(root)
@@ -40,6 +44,10 @@ export default async () => {
 
       plugins[id].instance = await import(join(path, plugins[id].entry))
       plugins[id].instance.default(getPluginCtx(plugins[id].packagename, plugins[id].data))
+
+      try {
+        fs.mkdirSync(plugins[id].data)
+      } catch (error) { }
 
       logger('Plugin').info(file, '载入完成')
     } catch (error) {
