@@ -290,6 +290,7 @@ export interface BotEvent extends EventEmitter {
   emit(event: 'honor', msg: GroupHonor): any
   emit(event: 'friend_request', msg: FriendRequest): any
   emit(event: 'group_request', msg: GroupRequest): any
+  emit(event: 'echo', msg: any): any
 
   on(event: 'group_message', listener: (msg: GroupMessage) => void): any
   on(event: 'private_message', listener: (msg: PrivateMessage) => void): any
@@ -306,6 +307,7 @@ export interface BotEvent extends EventEmitter {
   on(event: 'honor', listener: (msg: GroupHonor) => void): any
   on(event: 'friend_request', listener: (msg: FriendRequest) => void): any
   on(event: 'group_request', listener: (msg: GroupRequest) => void): any
+  on(event: 'echo', listener: (msg: any) => void): any
 
   addListener(event: 'group_message', listener: (msg: GroupMessage) => void): this;
   addListener(event: 'private_message', listener: (msg: PrivateMessage) => void): this;
@@ -322,6 +324,7 @@ export interface BotEvent extends EventEmitter {
   addListener(event: 'honor', listener: (msg: GroupHonor) => void): this;
   addListener(event: 'friend_request', listener: (msg: FriendRequest) => void): this;
   addListener(event: 'group_request', listener: (msg: GroupRequest) => void): this;
+  addListener(event: 'echo', listener: (msg: any) => void): this;
 
   removeAllListeners(event: 'group_message'): any
   removeAllListeners(event: 'private_message'): any
@@ -338,4 +341,5 @@ export interface BotEvent extends EventEmitter {
   removeAllListeners(event: 'honor'): any
   removeAllListeners(event: 'friend_request'): any
   removeAllListeners(event: 'group_request'): any
+  removeAllListeners(event: 'echo'): any
 }
