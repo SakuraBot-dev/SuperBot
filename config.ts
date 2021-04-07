@@ -6,8 +6,8 @@ const configPath = './config.json'
 const defaultConfig = {
   version: pack.version,
   master: {
-    OneBot: 1073166996,
-    telegram: 362640975
+    OneBot: 0,
+    telegram: 0
   },
   app: {
     OneBot: {
