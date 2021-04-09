@@ -615,8 +615,8 @@ eslint-visitor-keys@^2.0.0:
 
 eslint@^7.23.0:
   version "7.23.0"
-  resolved "https://registry.npm.taobao.org/eslint/download/eslint-7.23.0.tgz?cache=0&sync_timestamp=1616792589551&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feslint%2Fdownload%2Feslint-7.23.0.tgz#8d029d252f6e8cf45894b4bee08f5493f8e94325"
-  integrity sha1-jQKdJS9ujPRYlLS+4I9Uk/jpQyU=
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.23.0.tgz#8d029d252f6e8cf45894b4bee08f5493f8e94325"
+  integrity sha512-kqvNVbdkjzpFy0XOszNwjkKzZ+6TcwCQ/h+ozlcIWwaimBBuhlQ4nN6kbiM2L+OjDcznkTJxzYfRFH92sx4a0Q==
   dependencies:
     "@babel/code-frame" "7.12.11"
     "@eslint/eslintrc" "^0.4.0"

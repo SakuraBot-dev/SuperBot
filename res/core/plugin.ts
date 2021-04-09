@@ -3,6 +3,17 @@ import fs from 'fs'
 import logger from './logger'
 import ctx, { commands } from './ctx'
 
+export interface Plugin {
+  root: string,
+  name: string,
+  packagename: string,
+  data: string,
+  entry: string,
+  instance: any
+}
+
+export const plugins: Plugin[] = []
+
 const getPluginCtx = (packagename: string, data: string) => {
   const pluginCtx = { ...ctx }
   // @ts-ignore
@@ -21,8 +32,6 @@ export default async () => {
   const root = join(__dirname, '../../plugins')
   const files = fs.readdirSync(root)
 
-  const plugins: any[] = []
-
   for (const file of files) {
     try {
       logger('Plugin').info('正在载入 ', file)
@@ -39,7 +48,8 @@ export default async () => {
         name: config.name,
         packagename: config.packagename,
         data: join(__dirname, '../../data/', config.packagename),
-        entry: config.entry
+        entry: config.entry,
+        instance: null
       }
 
       plugins[id].instance = await import(join(path, plugins[id].entry))

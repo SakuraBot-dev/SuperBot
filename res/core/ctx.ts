@@ -4,10 +4,12 @@ import telegram from '../bot/telegram'
 import logger from './logger'
 import bot from './robot'
 import config from '../../config'
+import { plugins, Plugin } from './plugin'
 
 export const commands: {cmd: string, helper: string}[] = []
 export interface ctx {
   config: any,
+  plugins: Plugin[],
   telegram: telegram,
   OneBot: OneBot,
   logger: Logger,
@@ -16,6 +18,7 @@ export interface ctx {
 }
 
 export default {
+  plugins: plugins,
   config: config,
   telegram: bot.Bots.telegram ? bot.Bots.telegram : null,
   OneBot: bot.Bots.OneBot ? bot.Bots.OneBot : null,
