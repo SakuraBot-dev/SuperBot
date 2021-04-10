@@ -12,12 +12,13 @@ export interface Config {
 }
 
 export default class OneBot {
-  public socket: WebSocket
+  private socket: WebSocket
   public event: BotEvent
 
   constructor (config: Config) {
     // @ts-ignore
     this.event = new EventEmitter()
+    this.event.setMaxListeners(Number.MAX_SAFE_INTEGER)
 
     this.socket = new WebSocket(`ws://${config.host}:${config.port}/?access_token=${config.accessToken}`)
     this.socket.on('open', () => this.event.emit('open'))
@@ -110,5 +111,9 @@ export default class OneBot {
           break
       }
     }
+  }
+
+  public send (msg: any) {
+    this.socket.send(msg)
   }
 }

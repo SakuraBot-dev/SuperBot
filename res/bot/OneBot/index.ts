@@ -25,7 +25,7 @@ export default class API extends Bot {
       const echo = uuid()
       this.callback.once(echo, data => resolve(data))
 
-      this.socket.send({
+      this.send({
         action: action,
         echo: echo,
         params: params

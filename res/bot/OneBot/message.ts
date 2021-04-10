@@ -35,7 +35,7 @@ export default class Message {
   }
 
   video ({ url, timeout }: { url: string, timeout?: number }) {
-    this.message.push(`[CQ:record,url=${url}${timeout ? `,timeout=${timeout}` : ''}]`)
+    this.message.push(`[CQ:video,url=${url}${timeout ? `,timeout=${timeout}` : ''}]`)
     return this
   }
 
