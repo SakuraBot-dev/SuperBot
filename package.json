@@ -18,7 +18,8 @@
     "start": "node ./dist/app.js",
     "build": "node ./tools/before-build.js && tsc && node ./tools/after-build.js",
     "dev": "ts-node ./app.ts",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "lint:fix": "eslint --fix --ext .ts ."
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.20.0",
